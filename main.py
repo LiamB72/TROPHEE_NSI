@@ -47,7 +47,7 @@ class gameProgram:
         pygame.display.set_caption("Trophy NSI")
         self.screen = pygame.display.set_mode((640, 480))
         self.display = pygame.Surface((240, 180))
-        self.font = pygame.font.SysFont("Courier New", 15)
+        self.font = pygame.font.SysFont("Courier New", 12)
 
         self.clock = pygame.time.Clock()
 
@@ -64,7 +64,7 @@ class gameProgram:
 
         while True:
             self.display.fill((0, 0, 0))
-            showText = self.font.render(f"fps: {self.clock.get_fps():.2f}", False, (255, 255, 255))
+            showText = self.font.render(f"fps: {self.clock.get_fps():.0f}", False, (255, 255, 255))
             self.display.blit(showText, (15, 15))
 
             self.player.update((self.x_mov[1] - self.x_mov[0], 0))
