@@ -1,9 +1,11 @@
+"""
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtWidgets, QtGui,uic
 from PyQt5.QtCore import QObject, pyqtSignal
 import qdarkstyle
+"""
 import pygame
 import sys
 from scripts.entities import entityPhysics
