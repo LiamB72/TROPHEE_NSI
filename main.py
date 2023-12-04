@@ -64,7 +64,7 @@ class gameProgram:
 
         while True:
             self.display.fill((0, 0, 0))
-            showText = self.font.render(f"fps: {self.clock.get_fps():.0f}", False, (255, 255, 255))
+            showText = self.font.render(f"fps: {self.clock.get_fps():.2f}", False, (255, 255, 255))
             self.display.blit(showText, (15, 15))
 
             self.player.update((self.x_mov[1] - self.x_mov[0], 0))
