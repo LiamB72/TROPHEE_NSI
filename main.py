@@ -9,7 +9,7 @@ import qdarkstyle
 import pygame
 import sys
 from scripts.entities import entityPhysics
-from scripts.utility import img_loader, load_img
+from scripts.utility import img_loader
 
 
 """
@@ -44,7 +44,7 @@ pygame.init()
 class gameProgram:
     def __init__(self):
 
-        pygame.display.set_caption("In development!")
+        pygame.display.set_caption("Trophy NSI")
         self.screen = pygame.display.set_mode((640, 480))
         self.display = pygame.Surface((240, 180))
         self.font = pygame.font.SysFont("Courier New", 15)
