@@ -54,22 +54,31 @@ class gameProgram:
         self.x_mov = [False, False]
         self.y_mov = [False, False]
 
-        self.player = entityPhysics(self, 'player', (50, 50), (8, 15))
+        self.player = entityPhysics(self, 'player', (50, 50), (32, 32))
 
         self.assets = {
-            'player': img_loader('entities/player/player.png')
+            'player': img_loader('entities/player/perso.png')
         }
+
+        self.rectTest = pygame.Rect(75, 50, 50, 50)
 
     def run(self):
 
         while True:
-            self.display.fill((0, 0, 0))
+            self.display.fill((0, 0, 25))
             showText = self.font.render(f"fps: {self.clock.get_fps():.0f}", False, (255, 255, 255))
             self.display.blit(showText, (15, 15))
+            pygame.draw.rect(self.display, (100,100,100), self.rectTest)
+            playerRect = pygame.Rect(self.player.entity_pos[0], self.player.entity_pos[1], self.player.size[0], self.player.size[1])
+            pygame.draw.rect(self.display, (0,0,0), playerRect)
 
-            self.player.update((self.x_mov[1] - self.x_mov[0], 0))
-            self.player.update((0, self.y_mov[1] - self.y_mov[0]))
+            self.player.update(((self.x_mov[1] - self.x_mov[0])*1.257, 0))
+            self.player.update((0, (self.y_mov[1] - self.y_mov[0])*1.257))
             self.player.render(self.display)
+
+
+            if pygame.Rect.colliderect(self.rectTest, playerRect):
+                pygame.draw.rect(self.display, (255, 255, 255), self.rectTest)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
