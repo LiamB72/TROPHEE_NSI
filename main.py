@@ -9,7 +9,7 @@ import qdarkstyle
 import pygame
 import sys
 from scripts.entities import entityPhysics
-from scripts.utility import img_loader
+from scripts.utility import img_loader, load_img
 
 
 """
@@ -59,7 +59,8 @@ class gameProgram:
 
         #dict so it's easier to load images.
         self.assets = {
-            'player': img_loader('entities/player/perso.png')
+            'player': img_loader('entities/player/perso.png'),
+            'grass': img_loader('decor/grass/grass01.png')
         }
 
         # Actual Rect, holy hell.

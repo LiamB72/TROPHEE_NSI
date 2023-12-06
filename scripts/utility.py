@@ -8,8 +8,7 @@ def img_loader(path):
     img.set_colorkey((0,0,0))
     
     return img
-    
-    
+
 def load_img(path):
     images = []
     for img_name in os.listdir(BASE_IMG_PATH + path):
