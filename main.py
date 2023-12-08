@@ -55,12 +55,11 @@ class gameProgram:
         self.y_mov = [False, False] # Same but for the up and down
 
         # You can see the code for it in the entities.py file
-        self.player = entityPhysics(self, 'player', (50, 50), (28, 26))
+        self.player = entityPhysics(self, 'player', (212, 154), (28, 26))
 
         #dict so it's easier to load images.
         self.assets = {
             'player': img_loader('entities/player/perso.png'),
-            'grass': img_loader('decor/grass/grass01.png')
         }
 
         # Actual Rect, holy hell.
