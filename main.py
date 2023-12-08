@@ -84,7 +84,6 @@ class gameProgram:
 
             # Draws the two rect box on the display
             pygame.draw.rect(self.display, (100,100,100), self.rectTest)
-            pygame.draw.rect(self.display, (0,0,0), playerRect)
 
             # See code in entities.py
             self.player.update(((self.x_mov[1] - self.x_mov[0])*1.257, 0))
