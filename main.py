@@ -46,8 +46,8 @@ class gameProgram:
         #Initialises the pygame basic window configs
         pygame.display.set_caption("Trophy NSI")
         self.screen = pygame.display.set_mode((640, 480))
-        self.display = pygame.Surface((240, 180))
-        self.font = pygame.font.SysFont("Courier New", 12)
+        self.display = pygame.Surface((480, 360))
+        self.font = pygame.font.SysFont("Courier New", 18)
 
         self.clock = pygame.time.Clock() #Fps variable
 
@@ -55,7 +55,7 @@ class gameProgram:
         self.y_mov = [False, False] # Same but for the up and down
 
         # You can see the code for it in the entities.py file
-        self.player = entityPhysics(self, 'player', (50, 50), (32, 32))
+        self.player = entityPhysics(self, 'player', (50, 50), (28, 26))
 
         #dict so it's easier to load images.
         self.assets = {
@@ -64,7 +64,7 @@ class gameProgram:
         }
 
         # Actual Rect, holy hell.
-        self.rectTest = pygame.Rect(75, 50, 50, 50)
+        self.rectTest = pygame.Rect(325, 175, 125, 150)
 
     def run(self):
 
@@ -73,7 +73,10 @@ class gameProgram:
 
             # Shows the current fps
             fpsText = self.font.render(f"fps: {self.clock.get_fps():.0f}", False, (255, 255, 255))
-            self.display.blit(fpsText, (15, 15))
+            playerPosText = self.font.render(f"Pos: {self.player.entity_pos[0]:.2f}, {self.player.entity_pos[1]:.2f}",
+                                             False, (255, 255, 255))
+            self.display.blit(fpsText, (15, 25))
+            self.display.blit(playerPosText, (15, 45))
 
 
 
