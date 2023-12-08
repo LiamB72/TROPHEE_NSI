@@ -70,14 +70,11 @@ class gameProgram:
         while True:
             self.display.fill((0, 0, 0)) # Renders the screen black
 
-            # Shows the current fps
+            # Shows the current fps & the player's position
             fpsText = self.font.render(f"fps: {self.clock.get_fps():.0f}", False, (255, 255, 255))
-            playerPosText = self.font.render(f"Pos: {self.player.entity_pos[0]:.2f}, {self.player.entity_pos[1]:.2f}",
-                                             False, (255, 255, 255))
+            playerPosText = self.font.render(f"Pos: {self.player.entity_pos[0]:.2f}, {self.player.entity_pos[1]:.2f}",False, (255, 255, 255))
             self.display.blit(fpsText, (15, 25))
             self.display.blit(playerPosText, (15, 45))
-
-
 
             # Creates&Updates the rect of the player's, basically it's collision/bonding box.
             playerRect = pygame.Rect(self.player.entity_pos[0], self.player.entity_pos[1], self.player.size[0], self.player.size[1])
