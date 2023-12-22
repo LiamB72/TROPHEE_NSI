@@ -1,6 +1,6 @@
-#Berge Liam -> Coder
-#Reeves Guillaume -> Coder
-#Vix -> designer
+# Berge Liam -> Coder
+# Reeves Guillaume -> Coder
+# Vix -> designer
 
 import sys
 
@@ -19,7 +19,8 @@ class gameProgram:
         pygame.display.set_caption("Trophy NSI")
         self.ratio_Factor = 2
         self.screen_width, self.screen_height = 600, 600
-        self.display_width, self.display_height = self.screen_width / self.ratio_Factor, self.screen_height / self.ratio_Factor
+        self.display_width = self.screen_width / self.ratio_Factor
+        self.display_height = self.screen_height / self.ratio_Factor
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         self.display = pygame.Surface((self.display_width, self.display_height))
         self.font = pygame.font.SysFont("Courier New", 18)
@@ -29,9 +30,11 @@ class gameProgram:
         self.x_mov = [False, False]  # Used to check left and right key detection
         self.y_mov = [False, False]  # Same but for the up and down
 
+        self.debugMode = False
+
         # You can see the code for it in the playerModule.py file
         self.player_SpeedFactor = 1.2
-        self.player = player(self, 'player', ((self.display_width/2),(self.display_height/2)), (28, 30))
+        self.player = player(self, 'player', ((self.display_width / 2), (self.display_height / 2)), (28, 30))
         self.playerRect = pygame.Rect(self.player.entity_pos[0] + 9, self.player.entity_pos[1],
                                       self.player.size[0] - 10, self.player.size[1])
         self.assets = {
@@ -42,15 +45,13 @@ class gameProgram:
         self.camera_offset_y = -(self.player.entity_pos[1] - self.display_height / 2)
 
         self.limitLeft = pygame.Rect(0, 0, 5, self.display_height)
-        self.limitRight = pygame.Rect(self.display_width-5, 0, 5, self.display_height)
+        self.limitRight = pygame.Rect(self.display_width - 5, 0, 5, self.display_height)
         self.limitUp = pygame.Rect(0, 0, self.display_width, 5)
-        self.limitDown = pygame.Rect(0, self.display_height-5, self.display_width, 5)
+        self.limitDown = pygame.Rect(0, self.display_height - 5, self.display_width, 5)
         self.rectFootball = pygame.Rect(150, 25, 60, 35)
 
-        self.teleLocations = {"Lobby": [self.display_width/2, self.display_height/2],
-                              "football": [-15, 0]}
-        self.teleported = False
-
+        self.teleLocations = {"Lobby": [self.display_width / 2, self.display_height / 2],
+                              "football": [60, -380]}
 
     def run(self):
 
@@ -80,15 +81,13 @@ class gameProgram:
             pygame.draw.rect(self.display, (125, 125, 125), self.limitDown.move(self.camera.topleft))
 
             # See code in playerModule.py
-            #pygame.draw.rect(self.display, (125, 255, 125), self.playerRect.move(self.camera.topleft))
+            if self.debugMode == True:
+                pygame.draw.rect(self.display, (125, 255, 125), self.playerRect.move(self.camera.topleft))
             self.player.render(self.display)
             self.player.update(((self.x_mov[1] - self.x_mov[0]) * self.player_SpeedFactor, 0))
             self.player.update((0, (self.y_mov[1] - self.y_mov[0]) * self.player_SpeedFactor))
-            self.playerRect = pygame.Rect(self.player.entity_pos[0] + 9, self.player.entity_pos[1], self.player.size[0] - 10, self.player.size[1])
-
-            # if self.player.collisionCheck(self.tpBackCollision, 10):
-            #     self.player.entity_pos = self.ballSport["football"]
-            #     self.teleported = True
+            self.playerRect = pygame.Rect(self.player.entity_pos[0] + 9, self.player.entity_pos[1],
+                                          self.player.size[0] - 10, self.player.size[1])
 
             # Shows the current fps & the player's position
             fpsText = self.font.render(f"fps: {self.clock.get_fps():.0f}",
@@ -124,9 +123,12 @@ class gameProgram:
                         text = str(openUI(cMenu))
                         args, parameters = text.split(), []
                         c = args.pop(0)
+                        c = c.lower()
                         parameters.extend(args)
-                        if c == "tp" or c == "teleportPlayer" or c == "teleport":
+                        if c == "tp" or c == "teleportplayer" or c == "teleport":
                             self.player.entity_pos = [float(parameters[0]), float(parameters[1])]
+                        elif c == "debug" or c == "debugger" or c == "dbMode" or c == "db":
+                            self.debugMode = parameters[0]
 
                 # When key released
                 if event.type == pygame.KEYUP:
@@ -143,6 +145,7 @@ class gameProgram:
             pygame.display.update()
 
             # Obviously.
-            self.clock.tick(60)
+            self.clock.tick(120)
+
 
 gameProgram().run()
