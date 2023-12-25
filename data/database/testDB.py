@@ -30,4 +30,4 @@ def selData(request):
     db.close()
 
 
-selData("SELECT Name, NOC, Sport FROM goldonlydb WHERE Games='1972 Summer' ORDER BY Sport;")
+selData("SELECT Name, NOC, Sport FROM goldonlydb WHERE Games='1972 Summer' AND NOC='USA  ORDER BY Sport;")

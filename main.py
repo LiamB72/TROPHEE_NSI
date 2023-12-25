@@ -81,7 +81,7 @@ class gameProgram:
             pygame.draw.rect(self.display, (125, 125, 125), self.limitDown.move(self.camera.topleft))
 
             # See code in playerModule.py
-            if self.debugMode == True:
+            if self.debugMode:
                 pygame.draw.rect(self.display, (125, 255, 125), self.playerRect.move(self.camera.topleft))
             self.player.render(self.display)
             self.player.update(((self.x_mov[1] - self.x_mov[0]) * self.player_SpeedFactor, 0))
@@ -89,17 +89,18 @@ class gameProgram:
             self.playerRect = pygame.Rect(self.player.entity_pos[0] + 9, self.player.entity_pos[1],
                                           self.player.size[0] - 10, self.player.size[1])
 
-            # Shows the current fps & the player's position
-            fpsText = self.font.render(f"fps: {self.clock.get_fps():.0f}",
-                                       False,
-                                       (255, 255, 255))
+            if self.debugMode:
+                # Shows the current fps & the player's position
+                fpsText = self.font.render(f"fps: {self.clock.get_fps():.0f}",
+                                           False,
+                                           (255, 255, 255))
 
-            playerPosText = self.font.render(f"Pos: {self.player.entity_pos[0]:.0f}, {self.player.entity_pos[1]:.0f}",
-                                             False,
-                                             (255, 255, 255))
+                playerPosText = self.font.render(f"Pos: {self.player.entity_pos[0]:.0f}, {self.player.entity_pos[1]:.0f}",
+                                                 False,
+                                                 (255, 255, 255))
 
-            self.display.blit(fpsText, (15, 25))
-            self.display.blit(playerPosText, (15, 45))
+                self.display.blit(fpsText, (15, 25))
+                self.display.blit(playerPosText, (15, 45))
 
             # Makes the display on a bigger scale due to pixel art.
             # Checks for key press !!! You can change to your heart desire !!!
@@ -110,11 +111,11 @@ class gameProgram:
 
                 # When key pressed
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q:
+                    if event.key == pygame.K_q or event.key == pygame.K_a:
                         self.x_mov[0] = True
                     if event.key == pygame.K_d:
                         self.x_mov[1] = True
-                    if event.key == pygame.K_z:
+                    if event.key == pygame.K_z or event.key == pygame.K_w:
                         self.y_mov[0] = True
                     if event.key == pygame.K_s:
                         self.y_mov[1] = True
@@ -125,18 +126,18 @@ class gameProgram:
                         c = args.pop(0)
                         c = c.lower()
                         parameters.extend(args)
-                        if c == "tp" or c == "teleportplayer" or c == "teleport":
+                        if c == "tp" or c == "teleport":
                             self.player.entity_pos = [float(parameters[0]), float(parameters[1])]
-                        elif c == "debug" or c == "debugger" or c == "dbMode" or c == "db":
+                        elif c == "debug" or c == "debugger" or c == "db":
                             self.debugMode = parameters[0]
 
                 # When key released
                 if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_q:
+                    if event.key == pygame.K_q or event.key == pygame.K_a:
                         self.x_mov[0] = False
                     if event.key == pygame.K_d:
                         self.x_mov[1] = False
-                    if event.key == pygame.K_z:
+                    if event.key == pygame.K_z or event.key == pygame.K_w:
                         self.y_mov[0] = False
                     if event.key == pygame.K_s:
                         self.y_mov[1] = False
@@ -145,7 +146,7 @@ class gameProgram:
             pygame.display.update()
 
             # Obviously.
-            self.clock.tick(120)
+            self.clock.tick(60)
 
 
 gameProgram().run()
