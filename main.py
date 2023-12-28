@@ -7,7 +7,7 @@ import sys
 import pygame
 
 from scripts.playerModule import player
-from scripts.utility import img_loader
+from scripts.utility import img_loader, selectData
 from scripts.UIsModule import openUI, cMenu
 
 pygame.init()
@@ -30,13 +30,13 @@ class gameProgram:
         self.x_mov = [False, False]  # Used to check left and right key detection
         self.y_mov = [False, False]  # Same but for the up and down
 
-        self.debugMode = None
+        self.debugMode = False
 
         # You can see the code for it in the playerModule.py file
         self.player_SpeedFactor = 1.2
         self.player = player(self, 'player', ((self.display_width / 2), (self.display_height / 2)), (28, 30))
         self.playerRect = pygame.Rect(self.player.entity_pos[0] + 9, self.player.entity_pos[1],
-                                      self.player.size[0] - 10, self.player.size[1]-10)
+                                      self.player.size[0] - 10, self.player.size[1])
         self.assets = {
             'player': img_loader('entities/player/playerImg.png'),
         }
@@ -52,6 +52,10 @@ class gameProgram:
 
         self.teleLocations = {"Lobby": [self.display_width / 2, self.display_height / 2],
                               "football": [60, -380]}
+
+        text = selectData("SELECT Sport, COUNT(name) FROM goldonlydb WHERE COUNT(Name)<424 GROUP BY Sport HAVING COUNT(Name) ORDER BY COUNT(Name) LIMIT 10;")
+        print(text)
+
 
     def run(self):
 
@@ -106,16 +110,11 @@ class gameProgram:
             # Checks for key press !!! You can change to your heart desire !!!
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    print("Game closed correctly.")
                     pygame.quit()
                     sys.exit()
 
                 # When key pressed
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_BACKQUOTE:
-                        print("Game closed correctly.")
-                        pygame.quit()
-                        sys.exit()
                     if event.key == pygame.K_q or event.key == pygame.K_a:
                         self.x_mov[0] = True
                     if event.key == pygame.K_d:
@@ -134,10 +133,8 @@ class gameProgram:
                         if c == "tp" or c == "teleport":
                             self.player.entity_pos = [float(parameters[0]), float(parameters[1])]
                         elif c == "debug" or c == "debugger" or c == "db":
-                            if parameters[0] == "True" or parameters[0] == "1":
-                                self.debugMode = True
-                            elif parameters[0] == "False" or parameters[0] == "0":
-                                self.debugMode = False
+                            self.debugMode = parameters[0]
+
                 # When key released
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_q or event.key == pygame.K_a:

@@ -1,6 +1,4 @@
-# https://www.w3schools.com/python/python_mysql_getstarted.asp
 import mysql.connector
-from mysql.connector import FieldType
 
 
 def connectBD():
@@ -30,4 +28,4 @@ def selData(request):
     db.close()
 
 
-selData("SELECT Name, NOC, Sport FROM goldonlydb WHERE Games='1972 Summer' AND NOC='USA' ORDER BY Sport;")
+selData("SELECT distinct Sport, count(Sport) FROM goldonlydb GROUP BY Sport HAVING count(Team);")
