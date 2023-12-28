@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3306
--- Généré le : lun. 25 déc. 2023 à 20:30
--- Version du serveur : 8.2.0
--- Version de PHP : 8.2.13
+-- Host: 127.0.0.1:3306
+-- Generation Time: Dec 28, 2023 at 02:38 PM
+-- Server version: 8.2.0
+-- PHP Version: 8.2.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,29 +18,29 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `olympicsdb`
+-- Database: `olympicsdb`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `goldonlydb`
+-- Table structure for table `goldonlydb`
 --
 
 DROP TABLE IF EXISTS `goldonlydb`;
 CREATE TABLE IF NOT EXISTS `goldonlydb` (
-  `Name` varchar(75) DEFAULT NULL,
-  `Team` varchar(47) DEFAULT NULL,
-  `NOC` varchar(3) DEFAULT NULL,
-  `Games` varchar(11) DEFAULT NULL,
-  `City` varchar(22) DEFAULT NULL,
-  `Sport` varchar(25) DEFAULT NULL,
-  `Event` varchar(85) DEFAULT NULL,
-  `Medal` varchar(4) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+  `Name` varchar(75) CHARACTER SET utf8mb3 DEFAULT NULL,
+  `Team` varchar(47) CHARACTER SET utf8mb3 DEFAULT NULL,
+  `NOC` varchar(3) CHARACTER SET utf8mb3 DEFAULT NULL,
+  `Games` varchar(11) CHARACTER SET utf8mb3 DEFAULT NULL,
+  `City` varchar(22) CHARACTER SET utf8mb3 DEFAULT NULL,
+  `Sport` varchar(25) CHARACTER SET utf8mb3 DEFAULT NULL,
+  `Event` varchar(85) CHARACTER SET utf8mb3 DEFAULT NULL,
+  `Medal` varchar(4) CHARACTER SET utf8mb3 DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `goldonlydb`
+-- Dumping data for table `goldonlydb`
 --
 
 INSERT INTO `goldonlydb` (`Name`, `Team`, `NOC`, `Games`, `City`, `Sport`, `Event`, `Medal`) VALUES

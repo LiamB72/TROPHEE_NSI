@@ -1,30 +1,26 @@
-import mysql.connector
+import sqlite3
 
 
 def connectBD():
-    db = mysql.connector.connect(user='root', password='',
-                                 host='127.0.0.1',
-                                 database='olympicsDB')
+    db = sqlite3.connect(database='goldonlydb.sql')
     return db
 
 
 def selData(request):
     print(request, "\n")
+    cValue = ""
     db = connectBD()
-    requestExecutor = db.cursor()
-    requestExecutor.execute(request)
-    valuesList = requestExecutor.fetchall()
+    cursor = db.cursor()
+    cursor.execute(request)
 
-    for columnTitle in requestExecutor.description:
+    '''for columnTitle in cursor.description:
         print(f"{columnTitle[0]:60}", end="")
-    print("\n")
+    print("\n")'''
 
-    for rows in valuesList:
-        for val in rows:
-            print(f"{val:60}", end='')
-        print()
+    for row in cursor:
+        text = str(row[0]) + str(row[1]) + "\n"
 
-    requestExecutor.close()
+    cursor.close()
     db.close()
 
 
