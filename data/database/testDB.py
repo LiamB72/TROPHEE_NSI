@@ -2,11 +2,13 @@ import sqlite3
 
 
 def connectBD():
-    db = sqlite3.connect(database='goldonlydb.sql')
+    db = sqlite3.connect(database='olympicsDB.db')
     return db
 
 
 def selData(request):
+    text = ""
+    nb = ""
     print(request, "\n")
     cValue = ""
     db = connectBD()
@@ -18,10 +20,34 @@ def selData(request):
     print("\n")'''
 
     for row in cursor:
-        text = str(row[0]) + str(row[1]) + "\n"
+        text += f"{str(row[0])};"
+        nb += f"{str(row[1])} "
 
     cursor.close()
     db.close()
 
+    return text, nb
 
-selData("SELECT distinct Sport, count(Sport) FROM goldonlydb GROUP BY Sport HAVING count(Team);")
+
+rawData = selData('''
+SELECT distinct Sport, count(Team) 
+FROM goldonlydb 
+GROUP BY Sport HAVING COUNT(Team)
+ORDER BY COUNT(Team) DESC
+LIMIT 10;
+''')
+
+rawCategories = str(rawData[0])
+categories = ""
+
+for i in range(len(rawCategories)):
+    if rawCategories[i] != ';' and rawCategories[i] != " ":
+        categories += rawCategories[i]
+    elif rawCategories[i] == ';':
+        categories += " "
+    if rawCategories[i] == " ":
+        categories += ""
+
+categories = categories.split()
+
+print(categories)
