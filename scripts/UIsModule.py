@@ -22,6 +22,5 @@ def openUI(className):
     app.exec_()
 
     if className == cMenu:
-        print(widget.result_text)
         return widget.result_text
 

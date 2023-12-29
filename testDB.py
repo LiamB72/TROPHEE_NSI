@@ -27,12 +27,12 @@ def selData(request):
 
 
 selData('''
-SELECT Sport, Team, Games, MAX(MedalCount) as MaxMedals
+SELECT Sport, Team, MAX(MedalCount) as MaxMedals
     FROM (
-        SELECT Sport, Team, Games, COUNT(*) as MedalCount
+        SELECT Sport, Team, COUNT(*) as MedalCount
         FROM goldonlydb
         GROUP BY Sport, Team
     )
     GROUP BY Sport
-    ORDER BY Games DESC;
+    ORDER BY Sport;
 ''')
