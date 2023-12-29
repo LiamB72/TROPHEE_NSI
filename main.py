@@ -3,11 +3,9 @@
 # Vix -> designer
 
 import sys
-
 import pygame
-
 from scripts.playerModule import player
-from scripts.utility import img_loader, selectData
+from scripts.utility import img_loader
 from scripts.UIsModule import openUI, cMenu
 
 pygame.init()
@@ -52,9 +50,6 @@ class gameProgram:
 
         self.teleLocations = {"Lobby": [self.display_width / 2, self.display_height / 2],
                               "football": [60, -380]}
-
-        text = selectData("SELECT Sport, COUNT(name) FROM goldonlydb WHERE COUNT(Name)<424 GROUP BY Sport HAVING COUNT(Name) ORDER BY COUNT(Name) LIMIT 10;")
-        print(text)
 
 
     def run(self):
@@ -126,14 +121,18 @@ class gameProgram:
 
                     if event.key == pygame.K_t:
                         text = str(openUI(cMenu))
-                        args, parameters = text.split(), []
-                        c = args.pop(0)
-                        c = c.lower()
-                        parameters.extend(args)
-                        if c == "tp" or c == "teleport":
-                            self.player.entity_pos = [float(parameters[0]), float(parameters[1])]
-                        elif c == "debug" or c == "debugger" or c == "db":
-                            self.debugMode = parameters[0]
+                        if text != "":
+                            args, parameters = text.split(), []
+                            c = args.pop(0)
+                            c = c.lower()
+                            parameters.extend(args)
+                            if c == "tp" or c == "teleport":
+                                self.player.entity_pos = [float(parameters[0]), float(parameters[1])]
+                            elif c == "debug" or c == "debugger" or c == "db":
+                                if parameters[0] == "True":
+                                    self.debugMode = True
+                                elif parameters[0] == "False":
+                                    self.debugMode = False
 
                 # When key released
                 if event.type == pygame.KEYUP:
