@@ -50,31 +50,12 @@ class gameProgram:
 
         self.limitLeft = pygame.Rect(-245, 0, 5, self.display_height)
         self.limitRight = pygame.Rect(self.display_width + 240, 0, 5, self.display_height)
-        self.limitUp = pygame.Rect(-245, 0, self.display_width + 490 , 5)
+        self.limitUp = pygame.Rect(-245, 0, self.display_width + 490, 5)
         self.limitDown = pygame.Rect(-245, self.display_height - 5, self.display_width + 490, 5)
 
-        self.sportTeleporters = {
-            "Athletics":  {"CollisionBox": pygame.Rect(140, 260, 30, 30),
-                           "Text": self.font.render("Athletics", False, self.colors["White"])},
-            "Cycling":    {"CollisionBox": pygame.Rect(230, 260, 30, 30),
-                           "Text": self.font.render("Cycling", False, self.colors["White"])},
-            "Football":   {"CollisionBox": pygame.Rect(320, 260, 30, 30),
-                           "Text": self.font.render("Football", False, self.colors["White"])},
-            "Gymnastics": {"CollisionBox": pygame.Rect(50, 260, 30, 30),
-                           "Text": self.font.render("Gymnastics", False, self.colors["White"])},
-            "Hockey":     {"CollisionBox": pygame.Rect(-40, 260, 30, 30),
-                           "Text": self.font.render("Hockey", False, self.colors["White"])},
-            "Rowing":     {"CollisionBox": pygame.Rect(-150, 260, 30, 30),
-                           "Text": self.font.render("Rowing", False, self.colors["White"])},
-            "Sailing":    {"CollisionBox": pygame.Rect(140, 25, 30, 30),
-                           "Text": self.font.render("Sailing", False, self.colors["White"])},
-            "Swimming":   {"CollisionBox": pygame.Rect(230, 25, 30, 30),
-                           "Text": self.font.render("Swimming", False, self.colors["White"])}
-        }
         self.teleLocations = {"Lobby": [138, 130],
                               "Athletics": [60, -380]}
         self.collisionList = [self.limitLeft, self.limitRight, self.limitUp, self.limitDown]
-
 
     def run(self):
 
@@ -82,8 +63,43 @@ class gameProgram:
 
             self.display.fill((30, 30, 30))  # Renders the screen black
 
+            sportTeleporters = {
+                "Athletics": {"CollisionBox": pygame.Rect(140, 260, 30, 30),
+                              "Description": {"Text": self.font.render("Athletics", False, self.colors["White"]),
+                                              "Pos": [107 + self.camera_offset_x, 300 + self.camera_offset_y]}
+                              },
+                "Cycling": {"CollisionBox": pygame.Rect(230, 260, 30, 30),
+                            "Description": {"Text": self.font.render("Cycling", False, self.colors["White"]),
+                                            "Pos": [197 + self.camera_offset_x, 300 + self.camera_offset_y]}
+                            },
+                "Football": {"CollisionBox": pygame.Rect(320, 260, 30, 30),
+                             "Description": {"Text": self.font.render("Football", False, self.colors["White"]),
+                                             "Pos": [287 + self.camera_offset_x, 300 + self.camera_offset_y]}
+                             },
+                "Gymnastics": {"CollisionBox": pygame.Rect(50, 260, 30, 30),
+                               "Description": {"Text": self.font.render("Gymnastics", False, self.colors["White"]),
+                                               "Pos": [27 + self.camera_offset_x, 300 + self.camera_offset_y]}
+                               },
+                "Hockey": {"CollisionBox": pygame.Rect(-40, 260, 30, 30),
+                           "Description": {"Text": self.font.render("Hockey", False, self.colors["White"]),
+                                           "Pos": [-7 + self.camera_offset_x, 300 + self.camera_offset_y]}
+                           },
+                "Rowing": {"CollisionBox": pygame.Rect(-150, 260, 30, 30),
+                           "Description": {"Text": self.font.render("Rowing", False, self.colors["White"]),
+                                           "Pos": [-17 + self.camera_offset_x, 300 + self.camera_offset_y]}
+                           },
+                "Sailing": {"CollisionBox": pygame.Rect(140, 25, 30, 30),
+                            "Description": {"Text": self.font.render("Sailing", False, self.colors["White"]),
+                                            "Pos": [107 + self.camera_offset_x, -15 + self.camera_offset_y]}
+                            },
+                "Swimming": {"CollisionBox": pygame.Rect(230, 25, 30, 30),
+                             "Description": {"Text": self.font.render("Swimming", False, self.colors["White"]),
+                                             "Pos": [197 + self.camera_offset_x, -15 + self.camera_offset_y]}
+                             }
+            }
+
             ###### ----------- COLLISIONS CHECKING ----------- ######
-            if self.player.collisionCheck(self.sportTeleporters["Athletics"]["CollisionBox"], 10):
+            if self.player.collisionCheck(sportTeleporters["Athletics"]["CollisionBox"], 10):
                 self.player.entity_pos = self.teleLocations["Athletics"]
 
             for i in range(len(self.collisionList)):
@@ -101,16 +117,18 @@ class gameProgram:
 
             ###### ----------- DRAWING ONTO DISPLAY ----------- ######
 
-            pygame.draw.rect(self.display, self.colors["Gray"], self.sportTeleporters["Athletics"]["CollisionBox"].move(self.camera.topleft))
-            self.display.blit(self.sportTeleporters["Athletics"]["Text"], (107 + self.camera_offset_x, 300 + self.camera_offset_y))
-
-
+            pygame.draw.rect(self.display, self.colors["Gray"],
+                             sportTeleporters["Athletics"]["CollisionBox"].move(self.camera.topleft))
+            self.display.blit(sportTeleporters["Athletics"]["Description"]["Text"],
+                              sportTeleporters["Athletics"]["Description"]["Pos"])
 
             if self.debugMode:
-                fpsText = self.font.render(f"fps: {self.clock.get_fps():.0f}", False, self.colors["White"])
+                fpsText = self.font.render(f"FPS: {self.clock.get_fps():.0f}", False, self.colors["White"])
                 self.display.blit(fpsText, (15, 25))
 
-                playerPosText = self.font.render(f"Pos: {self.player.entity_pos[0]:.0f}, {self.player.entity_pos[1]:.0f}", False, self.colors["White"])
+                playerPosText = self.font.render(
+                    f"Pos: {self.player.entity_pos[0]:.0f}, {self.player.entity_pos[1]:.0f}", False,
+                    self.colors["White"])
                 self.display.blit(playerPosText, (15, 45))
 
             ###### -------------------------------------------- ######
@@ -122,7 +140,8 @@ class gameProgram:
             self.player.render(self.display)
             self.player.update(((self.x_mov[1] - self.x_mov[0]) * self.player_SpeedFactor, 0))
             self.player.update((0, (self.y_mov[1] - self.y_mov[0]) * self.player_SpeedFactor))
-            self.playerRect = pygame.Rect(self.player.entity_pos[0] + 9, self.player.entity_pos[1], self.player.size[0] - 10, self.player.size[1])
+            self.playerRect = pygame.Rect(self.player.entity_pos[0] + 9, self.player.entity_pos[1],
+                                          self.player.size[0] - 10, self.player.size[1])
 
             ###### -------------------------------------- ######
 
