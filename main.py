@@ -53,8 +53,6 @@ class gameProgram:
         self.limitUp = pygame.Rect(-245, 0, self.display_width + 490, 5)
         self.limitDown = pygame.Rect(-245, self.display_height - 5, self.display_width + 490, 5)
 
-        self.teleLocations = {"Lobby": [138, 130],
-                              "Athletics": [60, -380]}
         self.collisionList = [self.limitLeft, self.limitRight, self.limitUp, self.limitDown]
 
     def run(self):
@@ -100,7 +98,7 @@ class gameProgram:
 
             ###### ----------- COLLISIONS CHECKING ----------- ######
             if self.player.collisionCheck(sportTeleporters["Athletics"]["CollisionBox"], 10):
-                self.player.entity_pos = self.teleLocations["Athletics"]
+                pass
 
             for i in range(len(self.collisionList)):
                 self.player.collisionCheck(self.collisionList[i], 10, "wall")
