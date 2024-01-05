@@ -115,10 +115,17 @@ class gameProgram:
 
             ###### ----------- DRAWING ONTO DISPLAY ----------- ######
 
-            pygame.draw.rect(self.display, self.colors["Gray"],
-                             sportTeleporters["Athletics"]["CollisionBox"].move(self.camera.topleft))
-            self.display.blit(sportTeleporters["Athletics"]["Description"]["Text"],
-                              sportTeleporters["Athletics"]["Description"]["Pos"])
+            for sport, data in sportTeleporters.items():
+                collision_box = data["CollisionBox"].move(self.camera.topleft)
+                description_text = data["Description"]["Text"]
+
+                # Puts the text in relative to the rectangle and its hitbox
+                text_rect = description_text.get_rect()
+                text_rect.midtop = collision_box.midbottom
+
+                # Just draws the rectangle and text
+                pygame.draw.rect(self.display, self.colors["Gray"], collision_box)
+                self.display.blit(description_text, text_rect)
 
             if self.debugMode:
                 fpsText = self.font.render(f"FPS: {self.clock.get_fps():.0f}", False, self.colors["White"])
