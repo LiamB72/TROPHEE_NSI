@@ -39,13 +39,15 @@ class player:
             if pygame.Rect.colliderect(self.game.playerRect, collider):
                 # DOWN
                 if abs(collider.top - self.game.playerRect.bottom + self.spdFac) < tolerance:
-                    self.update((0, -1 * self.spdFac))
+                    self.update((0, -2 * self.spdFac))
                 # UP
                 if abs(collider.bottom - self.game.playerRect.top - self.spdFac) < tolerance:
-                    self.update((0, 1 * self.spdFac))
+                    self.update((0, 2 * self.spdFac))
                 # RIGHT
                 if abs(collider.left - self.game.playerRect.right + self.spdFac) < tolerance:
-                    self.update((-1 * self.spdFac, 0))
+                    self.update((-2 * self.spdFac, 0))
                 # LEFT
                 if abs(collider.right - self.game.playerRect.left - self.spdFac) < tolerance:
-                    self.update((1 * self.spdFac, 0))
+                    self.update((2 * self.spdFac, 0))
+
+                return True

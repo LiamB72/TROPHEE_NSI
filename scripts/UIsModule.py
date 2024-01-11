@@ -9,7 +9,7 @@ from scripts.utility import selData
 class promptMenu(QMainWindow, QWidget):
     def __init__(self):
         super().__init__()
-        uic.loadUi("../data/UIs/RequestOptions.ui", self)
+        uic.loadUi("./data/UIs/RequestOptions.ui", self)
         self.sqlRequest = None
 
         self.timer = QTimer(self)
@@ -17,6 +17,8 @@ class promptMenu(QMainWindow, QWidget):
         self.timer.start(100)
 
     def refreshRequest(self):
+
+        # This is obnoxious...
         if self.activateTime.isChecked():
             if self.activateUnder.isChecked():
                 self.maxTime.setEnabled(False)
@@ -41,7 +43,6 @@ class promptMenu(QMainWindow, QWidget):
 
     def on_button_click(self):
         input_text = self.line_edit.text()
-        words = input_text.split()
         self.simulate_sql_request(input_text)
 
         # Close the application
