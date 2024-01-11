@@ -58,43 +58,43 @@ class gameProgram:
     def run(self):
 
         while True:
+            sportTeleporters = {
+                "Rowing": {"CollisionBox": pygame.Rect(-170, 230, 30, 30),
+                           "Description": {"Text": self.font.render("Rowing", False, self.colors["White"]),
+                                           "Pos": [-187 + self.camera_offset_x, 270 + self.camera_offset_y]}
+                           },
+                "Hockey": {"CollisionBox": pygame.Rect(-75, 230, 30, 30),
+                           "Description": {"Text": self.font.render("Hockey", False, self.colors["White"]),
+                                           "Pos": [-90 + self.camera_offset_x, 270 + self.camera_offset_y]}
+                           },
+                "Gymnastics": {"CollisionBox": pygame.Rect(30, 230, 30, 30),
+                               "Description": {"Text": self.font.render("Gymnastics", False, self.colors["White"]),
+                                               "Pos": [-7 + self.camera_offset_x, 270 + self.camera_offset_y]}
+                               },
+                "Athletics": {"CollisionBox": pygame.Rect(150, 230, 30, 30),
+                              "Description": {"Text": self.font.render("Athletics", False, self.colors["White"]),
+                                              "Pos": [117 + self.camera_offset_x, 270 + self.camera_offset_y]}
+                              },
+                "Cycling": {"CollisionBox": pygame.Rect(250, 230, 30, 30),
+                            "Description": {"Text": self.font.render("Cycling", False, self.colors["White"]),
+                                            "Pos": [220 + self.camera_offset_x, 270 + self.camera_offset_y]}
+                            },
+                "Football": {"CollisionBox": pygame.Rect(340, 230, 30, 30),
+                             "Description": {"Text": self.font.render("Football", False, self.colors["White"]),
+                                             "Pos": [307 + self.camera_offset_x, 270 + self.camera_offset_y]}
+                             },
+                "Sailing": {"CollisionBox": pygame.Rect(430, 230, 30, 30),
+                            "Description": {"Text": self.font.render("Sailing", False, self.colors["White"]),
+                                            "Pos": [387 + self.camera_offset_x, 270 + self.camera_offset_y]}
+                            },
+                "Swimming": {"CollisionBox": pygame.Rect(230, 70, 30, 30),
+                             "Description": {"Text": self.font.render("Swimming", False, self.colors["White"]),
+                                             "Pos": [197 + self.camera_offset_x, 25 + self.camera_offset_y]}
+                             }
+            }
 
             self.display.fill((30, 30, 30))  # Renders the screen black
 
-            sportTeleporters = {
-                "Athletics": {"CollisionBox": pygame.Rect(140, 260, 30, 30),
-                              "Description": {"Text": self.font.render("Athletics", False, self.colors["White"]),
-                                              "Pos": [107 + self.camera_offset_x, 300 + self.camera_offset_y]}
-                              },
-                "Cycling": {"CollisionBox": pygame.Rect(230, 260, 30, 30),
-                            "Description": {"Text": self.font.render("Cycling", False, self.colors["White"]),
-                                            "Pos": [197 + self.camera_offset_x, 300 + self.camera_offset_y]}
-                            },
-                "Football": {"CollisionBox": pygame.Rect(320, 260, 30, 30),
-                             "Description": {"Text": self.font.render("Football", False, self.colors["White"]),
-                                             "Pos": [287 + self.camera_offset_x, 300 + self.camera_offset_y]}
-                             },
-                "Gymnastics": {"CollisionBox": pygame.Rect(50, 260, 30, 30),
-                               "Description": {"Text": self.font.render("Gymnastics", False, self.colors["White"]),
-                                               "Pos": [27 + self.camera_offset_x, 300 + self.camera_offset_y]}
-                               },
-                "Hockey": {"CollisionBox": pygame.Rect(-40, 260, 30, 30),
-                           "Description": {"Text": self.font.render("Hockey", False, self.colors["White"]),
-                                           "Pos": [-7 + self.camera_offset_x, 300 + self.camera_offset_y]}
-                           },
-                "Rowing": {"CollisionBox": pygame.Rect(-150, 260, 30, 30),
-                           "Description": {"Text": self.font.render("Rowing", False, self.colors["White"]),
-                                           "Pos": [-17 + self.camera_offset_x, 300 + self.camera_offset_y]}
-                           },
-                "Sailing": {"CollisionBox": pygame.Rect(140, 25, 30, 30),
-                            "Description": {"Text": self.font.render("Sailing", False, self.colors["White"]),
-                                            "Pos": [107 + self.camera_offset_x, -15 + self.camera_offset_y]}
-                            },
-                "Swimming": {"CollisionBox": pygame.Rect(230, 25, 30, 30),
-                             "Description": {"Text": self.font.render("Swimming", False, self.colors["White"]),
-                                             "Pos": [197 + self.camera_offset_x, -15 + self.camera_offset_y]}
-                             }
-            }
 
             ###### ----------- COLLISIONS CHECKING ----------- ######
             if self.player.collisionCheck(sportTeleporters["Athletics"]["CollisionBox"], 10):
@@ -126,6 +126,7 @@ class gameProgram:
                 # Just draws the rectangle and text
                 pygame.draw.rect(self.display, self.colors["Gray"], collision_box)
                 self.display.blit(description_text, text_rect)
+
 
             if self.debugMode:
                 fpsText = self.font.render(f"FPS: {self.clock.get_fps():.0f}", False, self.colors["White"])
@@ -205,3 +206,4 @@ class gameProgram:
 
 
 gameProgram().run()
+

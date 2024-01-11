@@ -1,42 +1,43 @@
 import sys
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QLineEdit, QLabel, QPushButton
+from PyQt5.QtCore import QTimer
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 from scripts.utility import selData
 
 
 
-class promptMenu(QWidget):
+class promptMenu(QMainWindow, QWidget):
     def __init__(self):
         super().__init__()
-
+        uic.loadUi("../data/UIs/RequestOptions.ui", self)
         self.sqlRequest = None
-        screen_geometry = QApplication.desktop().screenGeometry()
 
-        # Access screen width and height
-        screen_width = screen_geometry.width()
-        screen_height = screen_geometry.height()
-        app_width, app_height = 400, 100
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.refreshRequest)
+        self.timer.start(100)
 
-        # Set window properties
-        self.setWindowTitle("SQL Request Simulator")
-        self.setGeometry((screen_width // 2) - app_width // 2,
-                         (screen_height // 2) - app_height // 2,
-                         app_width,
-                         app_height)
+    def refreshRequest(self):
+        if self.activateTime.isChecked():
+            if self.activateUnder.isChecked():
+                self.maxTime.setEnabled(False)
+                self.minTime.setEnabled(True)
 
-        # Widgets
-        self.line_edit = QLineEdit()
-        self.result_label = QLabel("Info will be displayed here.")
-        self.button = QPushButton("Submit")
+            elif self.activateUpper.isChecked():
+                self.minTime.setEnabled(False)
+                self.maxTime.setEnabled(True)
 
-        # Layout
-        layout = QVBoxLayout()
-        layout.addWidget(self.line_edit)
-        layout.addWidget(self.result_label)
-        layout.addWidget(self.button)
+            elif self.activateBoth.isChecked():
+                self.minTime.setEnabled(True)
+                self.maxTime.setEnabled(True)
+        else:
+            self.minTime.setEnabled(False)
+            self.maxTime.setEnabled(False)
 
-        self.setLayout(layout)
-        self.button.clicked.connect(self.on_button_click)
+        if self.countryActivate.isChecked():
+            self.countryComboBox.setEnabled(True)
+        else:
+            self.countryComboBox.setEnabled(False)
+
 
     def on_button_click(self):
         input_text = self.line_edit.text()
@@ -79,5 +80,3 @@ def openUI(className):
         return widget.result_text
     elif className == promptMenu:
         return widget.sqlRequest
-
-print(openUI(promptMenu))

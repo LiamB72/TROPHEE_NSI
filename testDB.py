@@ -14,12 +14,12 @@ def selData(request):
     valuesList = requestExecutor.fetchall()
 
     for columnTitle in requestExecutor.description:
-        print(f"{columnTitle[0]:35}", end="")
+        print(f"{columnTitle[0]:40}", end="")
     print("\n")
 
     for rows in valuesList:
         for val in rows:
-            print(f"{val:35}", end='')
+            print(f"{val:40}", end='')
         print()
 
     requestExecutor.close()
@@ -27,12 +27,9 @@ def selData(request):
 
 
 selData('''
-SELECT Sport, Team, MAX(MedalCount) as MaxMedals
-    FROM (
-        SELECT Sport, Team, COUNT(*) as MedalCount
-        FROM goldonlydb
-        GROUP BY Sport, Team
-    )
-    GROUP BY Sport
-    ORDER BY Sport;
+SELECT Name, Medal
+FROM olympicsdb
+WHERE Medal!="Gold"
+GROUP BY Medal
+ORDER BY Medal
 ''')
