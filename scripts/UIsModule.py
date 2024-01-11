@@ -15,11 +15,10 @@ class promptMenu(QMainWindow, QWidget):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.refreshRequest)
         self.timer.start(100)
-        self.confirmButton.clicked.connect(self.on_button_click)
-        self.setSQLRequestText("SELECT * FROM olympicsdb")
-        self.optionString = "WHERE "
+        self.confirmButton.clicked.connect(self.confirmButton_clicked)
+        self.setSQLRequestText("SELECT * FROM olympicsdb;")
 
-        data = selData("SELECT Sport FROM olympicsdb GROUP BY Sport")
+        data = selData("SELECT Team FROM olympicsdb GROUP BY Team")
         for i in range(len(data[1])):
             self.teamFilterCombo.addItem(data[1][i])
 
@@ -32,12 +31,12 @@ class promptMenu(QMainWindow, QWidget):
             if self.activateUnder.isChecked():
                 self.minTime.setEnabled(True)
                 self.maxTime.setEnabled(False)
-                timeFilter = f"Games LIKE '{self.minTime.value()}%"
+                timeFilter = f"Games < '{self.minTime.value()}%"
 
             elif self.activateUpper.isChecked():
                 self.minTime.setEnabled(False)
                 self.maxTime.setEnabled(True)
-                timeFilter = f"Games LIKE '{self.maxTime.value()}%"
+                timeFilter = f"Games > '{self.maxTime.value()}%"
 
             elif self.activateBoth.isChecked():
                 self.minTime.setEnabled(True)
@@ -57,37 +56,58 @@ class promptMenu(QMainWindow, QWidget):
 
         ###### ################## ######
         medalFilter = self.checkMedal()
-        if timeFilter is not None:
-            print(timeFilter)
+        WHERE = self.updateWHERE(medalFilter, timeFilter, teamFilter)
+        self.setSQLRequestText(f"SELECT * FROM olympicsdb{WHERE}")
+
+    def updateWHERE(self, a0: str, a1: str, a2: str):
+        if a0 is not None \
+        and a1 is not None \
+        and a2 is not None:
+            request = f" WHERE {a0} AND {a1} AND {a2}"
+        elif a0 is not None \
+        and a1 is not None:
+            request = f" WHERE {a0} AND {a1}"
+        elif a0 is not None \
+        and a2 is not None:
+            request = f" WHERE {a0} AND {a2}"
+        elif a1 is not None \
+        and a2 is not None:
+            request = f" WHERE {a1} AND {a2}"
+        elif a0 is not None:
+            request = f" WHERE {a0}"
+        elif a1 is not None:
+            request = f" WHERE {a1}"
+        elif a2 is not None:
+            request = f" WHERE {a2}"
+
+        else:
+            request = ";"
+
+        return request
 
     def checkMedal(self):
-        stringReturned = ""
         if self.goldCB.isChecked() and self.silverCB.isChecked() and self.bronzeCB.isChecked():
             return None
         elif self.goldCB.isChecked() and self.silverCB.isChecked():
-            stringReturned = "!=bronze"
-            return stringReturned
+            return "Medal != 'bronze'"
         elif self.goldCB.isChecked() and self.bronzeCB.isChecked():
-            stringReturned = "!=silver"
-            return stringReturned
+            return "Medal != 'silver'"
         elif self.bronzeCB.isChecked() and self.silverCB.isChecked():
-            stringReturned = "!=gold"
-            return stringReturned
+            return "Medal != 'gold'"
+        elif self.goldCB.isChecked():
+            return "Medal = 'gold'"
+        elif self.silverCB.isChecked():
+            return "Medal = 'silver'"
+        elif self.bronzeCB.isChecked():
+            return "Medal = 'bronze'"
+
+
 
     def setSQLRequestText(self, text):
         self.sqlRequestBox.setText(text)
 
-    def on_button_click(self):
-        input_text = self.line_edit.text()
-        self.simulate_sql_request(input_text)
-
-        # Close the application
-        self.close()
-
-    def simulate_sql_request(self, words):
-        # Simulate SQL request logic based on the words
-        # This is a placeholder, you should replace it with your actual SQL logic
-        self.sqlRequest = words
+    def confirmButton_clicked(self):
+        selData(self.sqlRequestBox.text().strip() + ";")
 
 
 class dynamicUI(QMainWindow):
