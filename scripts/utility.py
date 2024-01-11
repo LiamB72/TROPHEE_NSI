@@ -27,7 +27,7 @@ def selData(request):
     titleRow = []
     dataRows = []
     for columnTitle in requestExecutor.description:
-        titleRow.append(columnTitle)
+        titleRow.append(columnTitle[0])
 
     for rows in valuesList:
         for values in rows:

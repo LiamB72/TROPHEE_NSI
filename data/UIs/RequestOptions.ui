@@ -296,7 +296,7 @@
      <attribute name="title">
       <string>Others</string>
      </attribute>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="limitLabel">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -314,7 +314,7 @@
        <string>line limit</string>
       </property>
      </widget>
-     <widget class="QSpinBox" name="spinBox">
+     <widget class="QSpinBox" name="limitSpin">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -336,7 +336,7 @@
        <number>39765</number>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkBox">
+     <widget class="QCheckBox" name="enableLimit">
       <property name="geometry">
        <rect>
         <x>180</x>
@@ -352,93 +352,22 @@
        <string>Enable line limit</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>71</y>
-        <width>91</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Filter 1</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBox">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>71</y>
-        <width>191</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>110</y>
-        <width>91</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Filter 2</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBox_2">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>110</y>
-        <width>191</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_4">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>150</y>
-        <width>91</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Filter 3</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBox_3">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>150</y>
-        <width>191</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
     </widget>
    </widget>
-   <widget class="QLabel" name="sqlRequestBox">
+   <widget class="QPushButton" name="confirmButton">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>440</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Fletch Data</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="sqlRequestQT">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -447,39 +376,24 @@
       <height>171</height>
      </rect>
     </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <property name="text">
-     <string>[SQL REQUEST HERE]</string>
-    </property>
-    <property name="textFormat">
-     <enum>Qt::PlainText</enum>
-    </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
     </property>
-    <property name="wordWrap">
+    <property name="clearButtonEnabled">
      <bool>true</bool>
     </property>
-    <property name="buddy">
-     <cstring></cstring>
-    </property>
    </widget>
-   <widget class="QPushButton" name="confirmButton">
+   <widget class="QPushButton" name="updButton">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>440</y>
-      <width>291</width>
+      <width>141</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Fletch Data</string>
+     <string>Update Request</string>
     </property>
    </widget>
   </widget>
