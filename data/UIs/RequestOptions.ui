@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>262</width>
+    <width>311</width>
     <height>475</height>
    </rect>
   </property>
@@ -19,15 +19,21 @@
      <rect>
       <x>0</x>
       <y>10</y>
-      <width>261</width>
-      <height>221</height>
+      <width>301</width>
+      <height>241</height>
      </rect>
     </property>
     <property name="autoFillBackground">
      <bool>true</bool>
     </property>
+    <property name="tabPosition">
+     <enum>QTabWidget::North</enum>
+    </property>
     <property name="currentIndex">
      <number>0</number>
+    </property>
+    <property name="elideMode">
+     <enum>Qt::ElideNone</enum>
     </property>
     <property name="usesScrollButtons">
      <bool>true</bool>
@@ -119,7 +125,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>30</x>
         <y>110</y>
         <width>101</width>
         <height>41</height>
@@ -141,7 +147,7 @@
      <widget class="QLabel" name="minTLabel">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>40</x>
         <y>80</y>
         <width>121</width>
         <height>31</height>
@@ -154,7 +160,7 @@
      <widget class="QLabel" name="maxTLabel">
       <property name="geometry">
        <rect>
-        <x>150</x>
+        <x>190</x>
         <y>80</y>
         <width>101</width>
         <height>31</height>
@@ -170,8 +176,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>110</y>
+        <x>180</x>
+        <y>114</y>
         <width>101</width>
         <height>41</height>
        </rect>
@@ -186,7 +192,7 @@
      <widget class="Line" name="separator">
       <property name="geometry">
        <rect>
-        <x>110</x>
+        <x>130</x>
         <y>80</y>
         <width>41</width>
         <height>71</height>
@@ -199,53 +205,53 @@
      <widget class="QRadioButton" name="activateUnder">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>50</y>
-        <width>82</width>
-        <height>17</height>
+        <x>30</x>
+        <y>60</y>
+        <width>121</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
-       <string>Activate</string>
+       <string>Filter by Before</string>
       </property>
      </widget>
      <widget class="QRadioButton" name="activateUpper">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>50</y>
-        <width>82</width>
-        <height>17</height>
+        <x>170</x>
+        <y>60</y>
+        <width>151</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
-       <string>Activate</string>
+       <string>Filter by After</string>
       </property>
      </widget>
      <widget class="QRadioButton" name="activateBoth">
       <property name="geometry">
        <rect>
-        <x>80</x>
-        <y>160</y>
-        <width>111</width>
+        <x>90</x>
+        <y>170</y>
+        <width>151</width>
         <height>41</height>
        </rect>
       </property>
       <property name="text">
-       <string>Activate Both</string>
+       <string>Filter by an interval</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="activateTime">
       <property name="geometry">
        <rect>
-        <x>100</x>
+        <x>70</x>
         <y>20</y>
-        <width>70</width>
-        <height>17</height>
+        <width>161</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
-       <string>Activate</string>
+       <string>Activate Filter by time frame</string>
       </property>
      </widget>
     </widget>
@@ -253,10 +259,10 @@
      <attribute name="title">
       <string>Team</string>
      </attribute>
-     <widget class="QCheckBox" name="countryActivate">
+     <widget class="QCheckBox" name="teamActivate">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>120</x>
         <y>10</y>
         <width>91</width>
         <height>31</height>
@@ -266,15 +272,15 @@
        <string>Activated</string>
       </property>
      </widget>
-     <widget class="QComboBox" name="countryComboBox">
+     <widget class="QComboBox" name="teamFilterCombo">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>20</x>
         <y>40</y>
-        <width>241</width>
+        <width>271</width>
         <height>31</height>
        </rect>
       </property>
@@ -286,13 +292,158 @@
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="othersFilters">
+     <attribute name="title">
+      <string>Others</string>
+     </attribute>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>91</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>line limit</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="spinBox">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>20</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="accelerated">
+       <bool>true</bool>
+      </property>
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>39765</number>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>20</y>
+        <width>121</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::NoContextMenu</enum>
+      </property>
+      <property name="text">
+       <string>Enable line limit</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>71</y>
+        <width>91</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Filter 1</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>71</y>
+        <width>191</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>110</y>
+        <width>91</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Filter 2</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_2">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>110</y>
+        <width>191</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>150</y>
+        <width>91</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Filter 3</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_3">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>150</y>
+        <width>191</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
    </widget>
    <widget class="QLabel" name="sqlRequestBox">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>260</y>
-      <width>241</width>
+      <width>291</width>
       <height>171</height>
      </rect>
     </property>
@@ -316,6 +467,32 @@
     </property>
     <property name="buddy">
      <cstring></cstring>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="updRq">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>430</y>
+      <width>141</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Update Request</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="confirmButton">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>430</y>
+      <width>141</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Fletch Data</string>
     </property>
    </widget>
   </widget>

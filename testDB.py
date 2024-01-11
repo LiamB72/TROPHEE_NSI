@@ -27,9 +27,10 @@ def selData(request):
 
 
 selData('''
-SELECT Name, Medal
+SELECT Games
 FROM olympicsdb
-WHERE Medal!="Gold"
-GROUP BY Medal
-ORDER BY Medal
+WHERE Games > "1990%"
+AND Games < "2004%"
+AND Sport="Athletics"
+ORDER BY Games DESC;
 ''')

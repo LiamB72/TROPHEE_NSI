@@ -1,6 +1,6 @@
 # Berge Liam -> Coder
 # Reeves Guillaume -> Coder
-# Vix -> designer
+# Vix -> Designer
 
 import sys
 import pygame
@@ -97,8 +97,6 @@ class gameProgram:
 
 
             ###### ----------- COLLISIONS CHECKING ----------- ######
-            if self.player.collisionCheck(sportTeleporters["Athletics"]["CollisionBox"], 10):
-                pass
 
             for i in range(len(self.collisionList)):
                 self.player.collisionCheck(self.collisionList[i], 10, "wall")

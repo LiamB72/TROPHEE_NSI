@@ -18,27 +18,22 @@ def load_img(path):
         images.append(img_loader(path + '/' + img_name))
     return images
 
-def connectBD():
-    db = sqlite3.connect(database='./data/database/olympicsDB.db')
-    return db
-
-
 def selData(request):
     print(request, "\n")
-    db = connectBD()
+    db = sqlite3.connect(database='../data/database/olympicsDB.db')
     requestExecutor = db.cursor()
     requestExecutor.execute(request)
     valuesList = requestExecutor.fetchall()
-
+    titleRow = []
+    dataRows = []
     for columnTitle in requestExecutor.description:
-        print(f"{columnTitle[0]:35}", end="")
-    print("\n")
+        titleRow.append(columnTitle)
 
     for rows in valuesList:
-        for val in rows:
-            print(f"{val:35}", end='')
-        print()
+        for values in rows:
+            dataRows.append(values)
 
     requestExecutor.close()
     db.close()
+    return titleRow, dataRows
 
