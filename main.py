@@ -10,7 +10,6 @@ from scripts.UIsModule import openUI, cMenu, promptMenu
 
 pygame.init()
 
-
 class gameProgram:
     def __init__(self):
         # Initialises the pygame basic window configs
@@ -126,7 +125,7 @@ class gameProgram:
                 self.display.blit(description_text, text_rect)
 
                 if self.player.collisionCheck(data["CollisionBox"], 10, "wall"):
-                    openUI(promptMenu)
+                    openUI(promptMenu, sport)
 
             if self.debugMode:
                 fpsText = self.font.render(f"FPS: {self.clock.get_fps():.0f}", False, self.colors["White"])

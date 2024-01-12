@@ -20,7 +20,7 @@ def load_img(path):
 
 def selData(request):
     print(request, "\n")
-    db = sqlite3.connect(database='../data/database/olympicsDB.db')
+    db = sqlite3.connect(database='./data/database/olympicsDB.db')
     requestExecutor = db.cursor()
     requestExecutor.execute(request)
     valuesList = requestExecutor.fetchall()

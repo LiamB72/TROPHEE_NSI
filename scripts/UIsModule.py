@@ -8,10 +8,12 @@ from scripts.utility import selData
 
 
 class promptMenu(QMainWindow, QWidget):
-    def __init__(self):
+    def __init__(self, sport):
         super().__init__()
-        uic.loadUi("../data/UIs/RequestOptions.ui", self)
+        uic.loadUi("./data/UIs/RequestOptions.ui", self)
+        self.limit = None
         self.sqlRequestText = None
+        self.sport = sport
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.updEnables)
@@ -58,13 +60,13 @@ class promptMenu(QMainWindow, QWidget):
         # This is obnoxious...
         if self.activateTime.isChecked():
             if self.activateUnder.isChecked():
-                timeFilter = f"Games < '{self.minTime.value()}%"
+                timeFilter = f"Games < '{self.minTime.value()}%'"
 
             elif self.activateUpper.isChecked():
-                timeFilter = f"Games > '{self.maxTime.value()}%"
+                timeFilter = f"Games > '{self.maxTime.value()}%'"
 
             elif self.activateBoth.isChecked():
-                timeFilter = f"Games < {self.maxTime.value()} AND Games > {self.minTime.value()}"
+                timeFilter = f"Games < '{self.maxTime.value()}' AND Games > '{self.minTime.value()}'"
         else:
             timeFilter = None
 
@@ -74,43 +76,32 @@ class promptMenu(QMainWindow, QWidget):
             teamFilter = None
 
         if self.enableLimit.isChecked():
-            limit = f"LIMIT {self.limitSpin.value()}"
+            self.limit = f"LIMIT {self.limitSpin.value()}"
         else:
-            limit = None
+            self.limit = None
 
         ###### ################## ######
         medalFilter = self.checkMedal()
-        WHERE = self.updateWHERE(medalFilter, timeFilter, teamFilter, limit)
-        self.setSQLRequestText(f"SELECT Name, Team, Sport, Games, Medal FROM olympicsdb{WHERE}")
+        WHERE = self.updateWHERE(medalFilter, timeFilter, teamFilter)
+        self.setSQLRequestText(f"SELECT Name, Team, Sport, Games, Medal FROM olympicsdb WHERE Sport LIKE '{self.sport}'{WHERE}")
 
-    def updateWHERE(self, a0: str, a1: str, a2: str, a3: str):
-        if a0 is not None and a1 is not None \
-                and a2 is not None and a3 is not None:
-            request = f" WHERE {a0} AND {a1} AND {a2} {a3}"
+    def updateWHERE(self, a0: str, a1: str, a2: str):
+        if a0 is not None and a1 is not None and a2 is not None:
+            request = f" AND {a0} AND {a1} AND {a2}"
 
         elif a0 is not None and a1 is not None:
-            request = f" WHERE {a0} AND {a1}"
+            request = f" AND {a0} AND {a1}"
         elif a0 is not None and a2 is not None:
-            request = f" WHERE {a0} AND {a2}"
-        elif a0 is not None and a3 is not None:
-            request = f" WHERE {a0} {a3}"
-
+            request = f" AND {a0} AND {a2}"
         elif a1 is not None and a2 is not None:
-            request = f" WHERE {a1} AND {a2}"
-        elif a1 is not None and a3 is not None:
-            request = f" WHERE {a1} {a3}"
-
-        elif a2 is not None and a3 is not None:
-            request = f" WHERE {a2} {a3}"
+            request = f" AND {a1} AND {a2}"
 
         elif a0 is not None:
-            request = f" WHERE {a0}"
+            request = f" AND {a0}"
         elif a1 is not None:
-            request = f" WHERE {a1}"
+            request = f" AND {a1}"
         elif a2 is not None:
-            request = f" WHERE {a2}"
-        elif a3 is not None:
-            request = f" {a3}"
+            request = f" AND {a2}"
 
         else:
             request = ""
@@ -138,10 +129,22 @@ class promptMenu(QMainWindow, QWidget):
 
     def confirmButton_clicked(self):
         string = str(self.sqlRequestQT.text())
-        string += ";"
+        if self.limit is not None:
+            string += f" GROUP BY Name {self.limit};"
+        else:
+            string += " GROUP BY Name;"
         data = selData(string)
         print(data)
-
+        print("########## NEW REQUEST ##########")
+        if data[1]:
+            i = 0
+            while i <= len(data[1])-5:
+                print(f"{data[0][0]}: {data[1][i]:50}| {data[0][1]}: {data[1][i+1]:40}| {data[0][2]}: {data[1][i+2]:12}| {data[0][3]}: {data[1][i+3]:12}| {data[0][4]}: {data[1][i+4]}")
+                i += 5
+                self.close()
+        else:
+            print("Data Fletched is empty. SQL Request may be done wrongfully. Please try again.")
+            self.close()
 
 
 class dynamicUI(QMainWindow):
@@ -163,15 +166,16 @@ class cMenu(QMainWindow):
         self.close()
 
 
-def openUI(className):
+def openUI(className, option01:str=None):
     app = QApplication(sys.argv)
-    widget = className()
+    widget = None
+    if className == cMenu:
+        widget = cMenu()
+    elif className == promptMenu:
+        widget = promptMenu(option01)
     widget.show()
     app.exec_()
     if className == cMenu:
         return widget.result_text
     elif className == promptMenu:
         return widget.sqlRequestText
-
-
-openUI(promptMenu)
