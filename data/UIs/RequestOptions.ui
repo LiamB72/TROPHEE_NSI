@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>311</width>
-    <height>475</height>
+    <height>481</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -350,6 +350,24 @@
       </property>
       <property name="text">
        <string>Enable line limit</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="printResultCB">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>291</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Print Results</string>
       </property>
      </widget>
     </widget>

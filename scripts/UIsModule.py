@@ -56,6 +56,7 @@ class promptMenu(QMainWindow, QWidget):
 
     def refreshRequest(self):
         ###### Activation Buttons ######
+        medalFilter, timeFilter, teamFilter = None, None, None
 
         # This is obnoxious...
         if self.activateTime.isChecked():
@@ -129,34 +130,41 @@ class promptMenu(QMainWindow, QWidget):
 
     def confirmButton_clicked(self):
         string = str(self.sqlRequestQT.text())
-        if self.limit is not None:
-            string += f" GROUP BY Name {self.limit};"
-        else:
-            string += " GROUP BY Name;"
-        data = selData(string)
-        print(data)
-        print("########## NEW REQUEST ##########")
-        if data[1]:
-            i = 0
-            while i <= len(data[1])-5:
-                print(f"{data[0][0]}: {data[1][i]:50}| {data[0][1]}: {data[1][i+1]:40}| {data[0][2]}: {data[1][i+2]:12}| {data[0][3]}: {data[1][i+3]:12}| {data[0][4]}: {data[1][i+4]}")
-                i += 5
-                self.close()
-        else:
-            print("Data Fletched is empty. SQL Request may be done wrongfully. Please try again.")
-            self.close()
+        if self.printResultCB.isChecked():
+            if self.limit is not None:
+                string += f" GROUP BY Name {self.limit};"
+            else:
+                string += " GROUP BY Name;"
+            data = selData(string)
+            print(data)
+            print("########## NEW REQUEST ##########")
+            if data[1]:
+                i = 0
+                while i <= len(data[1])-5:
+                    print(f"{data[0][0]}: {data[1][i]:50}| {data[0][1]}: {data[1][i+1]:40}| {data[0][2]}: {data[1][i+2]:12}| {data[0][3]}: {data[1][i+3]:12}| {data[0][4]}: {data[1][i+4]}")
+                    i += 5
+            else:
+                print("Data Fletched is empty. SQL Request may be done wrongfully. Please try again.")
+        self.close()
+        openUI(resultDisplayer, string)
 
 
-class dynamicUI(QMainWindow):
+class resultDisplayer(QMainWindow):
     def __init__(self, request):
         super().__init__()
-        selData(request)
+        uic.loadUi("./data/UIs/veryveryRawUI-Stormy.ui", self)
+        data = selData(request)
+        if not data:
+            print("Data fletched is empty")
+        else:
+            print("Data was successfully gathered")
+        self.close()
 
 
 class cMenu(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi("data/UIs/cMenu.ui", self)
+        uic.loadUi("./data/UIs/cMenu.ui", self)
         self.result_text = None
         self.lineEdit.returnPressed.connect(self.closeUI)
         self.pushButton.clicked.connect(self.closeUI)
@@ -166,16 +174,16 @@ class cMenu(QMainWindow):
         self.close()
 
 
-def openUI(className, option01:str=None):
+def openUI(className, option01=None):
     app = QApplication(sys.argv)
     widget = None
     if className == cMenu:
         widget = cMenu()
     elif className == promptMenu:
         widget = promptMenu(option01)
+    elif className == resultDisplayer:
+        widget = resultDisplayer(option01)
     widget.show()
     app.exec_()
     if className == cMenu:
         return widget.result_text
-    elif className == promptMenu:
-        return widget.sqlRequestText
