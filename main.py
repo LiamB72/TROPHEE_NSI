@@ -6,7 +6,7 @@ import sys
 import pygame
 from scripts.playerModule import player
 from scripts.utility import img_loader
-from scripts.UIsModule import openUI, cMenu, promptMenu
+from scripts.UIsModule import openUI, cMenu, promptMenu, ResultsDisplayer
 
 pygame.init()
 
@@ -125,7 +125,10 @@ class gameProgram:
                 self.display.blit(description_text, text_rect)
 
                 if self.player.collisionCheck(data["CollisionBox"], 10, "wall"):
-                    openUI(promptMenu, sport)
+                    request = openUI(promptMenu, sport)
+                    print("After promptMenu:",request)
+                    if request or request is not None:
+                        ResultsDisplayer(request)
 
             if self.debugMode:
                 fpsText = self.font.render(f"FPS: {self.clock.get_fps():.0f}", False, self.colors["White"])

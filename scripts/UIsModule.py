@@ -11,6 +11,7 @@ class promptMenu(QMainWindow, QWidget):
     def __init__(self, sport):
         super().__init__()
         uic.loadUi("./data/UIs/RequestOptions.ui", self)
+        self.data = None
         self.limit = None
         self.sqlRequestText = None
         self.sport = sport
@@ -130,12 +131,12 @@ class promptMenu(QMainWindow, QWidget):
 
     def confirmButton_clicked(self):
         string = str(self.sqlRequestQT.text())
+        if self.limit is not None:
+            string += f" GROUP BY Name {self.limit};"
+        else:
+            string += " GROUP BY Name;"
+        self.data = selData(string)
         if self.printResultCB.isChecked():
-            if self.limit is not None:
-                string += f" GROUP BY Name {self.limit};"
-            else:
-                string += " GROUP BY Name;"
-            data = selData(string)
             print(data)
             print("########## NEW REQUEST ##########")
             if data[1]:
@@ -146,19 +147,11 @@ class promptMenu(QMainWindow, QWidget):
             else:
                 print("Data Fletched is empty. SQL Request may be done wrongfully. Please try again.")
         self.close()
-        openUI(resultDisplayer, string)
 
 
-class resultDisplayer(QMainWindow):
+class ResultsDisplayer:
     def __init__(self, request):
-        super().__init__()
-        uic.loadUi("./data/UIs/veryveryRawUI-Stormy.ui", self)
-        data = selData(request)
-        if not data:
-            print("Data fletched is empty")
-        else:
-            print("Data was successfully gathered")
-        self.close()
+        print("Within resultsDisplayer request:", request)
 
 
 class cMenu(QMainWindow):
@@ -181,9 +174,11 @@ def openUI(className, option01=None):
         widget = cMenu()
     elif className == promptMenu:
         widget = promptMenu(option01)
-    elif className == resultDisplayer:
-        widget = resultDisplayer(option01)
+    elif className == ResultsDisplayer:
+        widget = ResultsDisplayer(option01)
     widget.show()
     app.exec_()
     if className == cMenu:
         return widget.result_text
+    elif className == promptMenu:
+        return widget.data
