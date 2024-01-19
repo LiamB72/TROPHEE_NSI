@@ -152,6 +152,8 @@ class promptMenu(QMainWindow, QWidget):
 class ResultsDisplayer:
     def __init__(self, request):
         print("Within resultsDisplayer request:", request)
+        if request is not None:
+            print("data successfully fetched")
 
 
 class cMenu(QMainWindow):
@@ -170,15 +172,21 @@ class cMenu(QMainWindow):
 def openUI(className, option01=None):
     app = QApplication(sys.argv)
     widget = None
+
     if className == cMenu:
         widget = cMenu()
+
     elif className == promptMenu:
         widget = promptMenu(option01)
+
     elif className == ResultsDisplayer:
         widget = ResultsDisplayer(option01)
+
     widget.show()
     app.exec_()
+
     if className == cMenu:
         return widget.result_text
+
     elif className == promptMenu:
         return widget.data
