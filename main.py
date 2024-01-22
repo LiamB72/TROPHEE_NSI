@@ -125,10 +125,7 @@ class gameProgram:
                 self.display.blit(description_text, text_rect)
 
                 if self.player.collisionCheck(data["CollisionBox"], 10, "wall"):
-                    request = openUI(promptMenu, sport)
-                    print("After promptMenu:",request)
-                    if request or request is not None:
-                        ResultsDisplayer(request)
+                    openUI(promptMenu, sport)
 
             if self.debugMode:
                 fpsText = self.font.render(f"FPS: {self.clock.get_fps():.0f}", False, self.colors["White"])

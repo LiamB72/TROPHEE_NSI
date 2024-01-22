@@ -11,7 +11,8 @@ class promptMenu(QMainWindow, QWidget):
     def __init__(self, sport):
         super().__init__()
         uic.loadUi("./data/UIs/RequestOptions.ui", self)
-        self.data = None
+        self.results_displayer = None
+
         self.limit = None
         self.sqlRequestText = None
         self.sport = sport
@@ -22,7 +23,7 @@ class promptMenu(QMainWindow, QWidget):
 
         self.updButton.clicked.connect(self.refreshRequest)
         self.confirmButton.clicked.connect(self.confirmButton_clicked)
-        self.sqlRequestQT.setPlaceholderText("[This is where the request is displayed]\nCan be edited directly")
+        self.sqlRequestQT.setPlaceholderText("[This is where the data is displayed]\nCan be edited directly")
 
         data = selData("SELECT Team FROM olympicsdb GROUP BY Team")
         for i in range(len(data[1])):
@@ -130,12 +131,13 @@ class promptMenu(QMainWindow, QWidget):
         self.sqlRequestQT.setText(text)
 
     def confirmButton_clicked(self):
+        global app
         string = str(self.sqlRequestQT.text())
         if self.limit is not None:
             string += f" GROUP BY Name {self.limit};"
         else:
             string += " GROUP BY Name;"
-        self.data = selData(string)
+        data = selData(string)
         if self.printResultCB.isChecked():
             print(data)
             print("########## NEW REQUEST ##########")
@@ -146,13 +148,22 @@ class promptMenu(QMainWindow, QWidget):
                     i += 5
             else:
                 print("Data Fletched is empty. SQL Request may be done wrongfully. Please try again.")
+
         self.close()
 
+        self.results_displayer = ResultsDisplayer(data)
+        self.results_displayer.show()
+        if app is None:
+            app = QApplication(sys.argv)
+        app.exec_()
 
-class ResultsDisplayer:
-    def __init__(self, request):
-        print("Within resultsDisplayer request:", request)
-        if request is not None:
+
+
+class ResultsDisplayer(QMainWindow):
+    def __init__(self, data):
+        super().__init__()
+        uic.loadUi("./data/UIs/veryveryRawUI-Stormy.ui", self)
+        if data is not None:
             print("data successfully fetched")
 
 
@@ -168,10 +179,14 @@ class cMenu(QMainWindow):
         self.result_text = self.lineEdit.text()
         self.close()
 
+app = QApplication(sys.argv)
 
 def openUI(className, option01=None):
-    app = QApplication(sys.argv)
+    global app
     widget = None
+
+    if app is None:
+        app = QApplication(sys.argv)
 
     if className == cMenu:
         widget = cMenu()
@@ -179,14 +194,8 @@ def openUI(className, option01=None):
     elif className == promptMenu:
         widget = promptMenu(option01)
 
-    elif className == ResultsDisplayer:
-        widget = ResultsDisplayer(option01)
-
     widget.show()
     app.exec_()
 
     if className == cMenu:
         return widget.result_text
-
-    elif className == promptMenu:
-        return widget.data
