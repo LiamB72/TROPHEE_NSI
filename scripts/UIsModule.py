@@ -1,11 +1,11 @@
 import sys
 
-from PyQt5 import uic
+from PyQt5 import uic, QtGui
 from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QMessageBox, QVBoxLayout, QScrollArea, QLabel, QHBoxLayout
 
 from scripts.utility import selData
-
 
 class promptMenu(QMainWindow, QWidget):
     def __init__(self, sport):
@@ -25,7 +25,7 @@ class promptMenu(QMainWindow, QWidget):
         self.confirmButton.clicked.connect(self.confirmButton_clicked)
         self.sqlRequestQT.setPlaceholderText("[This is where the data is displayed]\nCan be edited directly")
 
-        data = selData("SELECT Team FROM olympicsdb GROUP BY Team")
+        data = selData(f"SELECT Team FROM olympicsdb WHERE sport LIKE '{self.sport}' GROUP BY Team")
         for i in range(len(data[1])):
             self.teamFilterCombo.addItem(data[1][i])
 
@@ -159,12 +159,43 @@ class promptMenu(QMainWindow, QWidget):
 
 
 
-class ResultsDisplayer(QMainWindow):
+class ResultsDisplayer(QWidget):
     def __init__(self, data):
         super().__init__()
-        uic.loadUi("./data/UIs/veryveryRawUI-Stormy.ui", self)
         if data is not None:
             print("data successfully fetched")
+            print(data)
+
+        widthWin, heightWin = 500, 500
+
+        self.setWindowTitle("Test UI")
+        self.setFixedSize(widthWin, heightWin)
+        self.layout = QVBoxLayout()
+        self.setLayout(self.layout)
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+
+        widget = QWidget()
+        widget_layout = QVBoxLayout()
+        widget.setLayout(widget_layout)
+
+        if data is not None and data[1]:
+            headers = data[0]
+            for i in range(len(headers)):
+                label = QLabel(headers[i])
+                widget_layout.addWidget(label)
+
+
+                for j in range(len(data[1])):
+                    print(j)
+                    value_label = QLabel(data[1][j])
+                    widget_layout.addWidget(value_label)
+        else:
+            label = QLabel("The data fetched is empty")
+            widget_layout.addWidget(label)
+
+        self.scroll_area.setWidget(widget)
+        self.layout.addWidget(self.scroll_area)
 
 
 class cMenu(QMainWindow):

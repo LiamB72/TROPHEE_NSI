@@ -382,7 +382,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Fletch Data</string>
+     <string>Fetch Data</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="sqlRequestQT">
