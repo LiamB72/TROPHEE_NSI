@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>302</width>
-    <height>480</height>
+    <width>300</width>
+    <height>509</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>10</y>
-      <width>301</width>
-      <height>241</height>
+      <y>0</y>
+      <width>300</width>
+      <height>291</height>
      </rect>
     </property>
     <property name="autoFillBackground">
@@ -49,7 +49,7 @@
     </property>
     <widget class="QWidget" name="medalTab">
      <attribute name="title">
-      <string>Medals</string>
+      <string>Filtre Médailles</string>
      </attribute>
      <widget class="QCheckBox" name="goldCB">
       <property name="geometry">
@@ -66,7 +66,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Gold Medals</string>
+       <string>Médailles d'or</string>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -87,7 +87,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Silver Medals</string>
+       <string>Médailles d'argent</string>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -108,7 +108,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Bronze Medals</string>
+       <string>Médailles de bronze</string>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -117,35 +117,35 @@
     </widget>
     <widget class="QWidget" name="timeTab">
      <attribute name="title">
-      <string>Time Frame</string>
+      <string>Filtre Temps</string>
      </attribute>
      <widget class="QCheckBox" name="activateTime">
       <property name="geometry">
        <rect>
-        <x>70</x>
+        <x>60</x>
         <y>20</y>
-        <width>161</width>
+        <width>181</width>
         <height>31</height>
        </rect>
       </property>
       <property name="text">
-       <string>Activate Filter by time frame</string>
+       <string>Activer le filtre par temporisation</string>
       </property>
      </widget>
      <widget class="QGroupBox" name="timeGroup">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>50</y>
-        <width>291</width>
+        <width>281</width>
         <height>161</height>
        </rect>
       </property>
       <property name="title">
-       <string>timeGroup</string>
+       <string/>
       </property>
       <widget class="Line" name="separator">
        <property name="geometry">
@@ -163,14 +163,14 @@
       <widget class="QRadioButton" name="activateBoth">
        <property name="geometry">
         <rect>
-         <x>80</x>
+         <x>50</x>
          <y>120</y>
-         <width>151</width>
+         <width>181</width>
          <height>41</height>
         </rect>
        </property>
        <property name="text">
-        <string>Filter by an interval</string>
+        <string>Filtrer par un intervalle de temps</string>
        </property>
       </widget>
       <widget class="QSpinBox" name="maxTime">
@@ -202,7 +202,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>&gt; Time Frame</string>
+        <string>après:</string>
        </property>
       </widget>
       <widget class="QRadioButton" name="activateUpper">
@@ -215,20 +215,20 @@
         </rect>
        </property>
        <property name="text">
-        <string>Filter by After</string>
+        <string>Filtrer par les années</string>
        </property>
       </widget>
       <widget class="QRadioButton" name="activateUnder">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>0</x>
          <y>10</y>
          <width>121</width>
          <height>31</height>
         </rect>
        </property>
        <property name="text">
-        <string>Filter by Before</string>
+        <string>Filtrer par les années</string>
        </property>
       </widget>
       <widget class="QSpinBox" name="minTime">
@@ -259,86 +259,30 @@
       <widget class="QLabel" name="minTLabel">
        <property name="geometry">
         <rect>
-         <x>30</x>
+         <x>20</x>
          <y>30</y>
          <width>121</width>
          <height>31</height>
         </rect>
        </property>
        <property name="text">
-        <string> &lt; Time Frame</string>
+        <string>précédent:</string>
        </property>
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="teamTab">
-     <attribute name="title">
-      <string>Team</string>
-     </attribute>
-     <widget class="QCheckBox" name="teamActivate">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>10</y>
-        <width>91</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Activated</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="teamFilterCombo">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>40</y>
-        <width>271</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="duplicatesEnabled">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </widget>
     <widget class="QWidget" name="othersFilters">
      <attribute name="title">
-      <string>Others</string>
+      <string>Autre Filtres</string>
      </attribute>
-     <widget class="QCheckBox" name="printResultCB">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>170</y>
-        <width>131</width>
-        <height>50</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>8</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Print Results</string>
-      </property>
-     </widget>
      <widget class="QGroupBox" name="sortingGroup">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>80</y>
+        <x>11</x>
+        <y>95</y>
         <width>281</width>
         <height>81</height>
        </rect>
@@ -347,11 +291,11 @@
        <bool>false</bool>
       </property>
       <property name="title">
-       <string>sortingGroup</string>
+       <string/>
       </property>
       <widget class="QComboBox" name="sortByCB">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -364,7 +308,7 @@
       </widget>
       <widget class="QRadioButton" name="descendingRatio">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -375,16 +319,16 @@
         </rect>
        </property>
        <property name="text">
-        <string>Descending</string>
+        <string>Descendant</string>
        </property>
       </widget>
       <widget class="QLabel" name="sortByLabel">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>10</y>
+         <y>0</y>
          <width>91</width>
-         <height>31</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -393,12 +337,12 @@
         </font>
        </property>
        <property name="text">
-        <string>Sort by:</string>
+        <string>Trier par :</string>
        </property>
       </widget>
       <widget class="QRadioButton" name="ascendingRatio">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -409,7 +353,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>Ascending</string>
+        <string>Ascendant</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -417,27 +361,27 @@
       </widget>
       <widget class="QLabel" name="infoLabel001">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
-         <x>13</x>
+         <x>12</x>
          <y>60</y>
          <width>71</width>
          <height>16</height>
         </rect>
        </property>
        <property name="text">
-        <string>^ by default</string>
+        <string>^ par défaut</string>
        </property>
       </widget>
      </widget>
      <widget class="QCheckBox" name="enableSortBy">
       <property name="geometry">
        <rect>
-        <x>170</x>
-        <y>145</y>
-        <width>120</width>
+        <x>160</x>
+        <y>160</y>
+        <width>131</width>
         <height>30</height>
        </rect>
       </property>
@@ -448,33 +392,33 @@
        <bool>true</bool>
       </property>
       <property name="text">
-       <string>Enable Sort By Filter</string>
+       <string>Activer le filtre de trie</string>
       </property>
      </widget>
      <widget class="QGroupBox" name="limitGroup">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>10</y>
         <width>281</width>
-        <height>61</height>
+        <height>71</height>
        </rect>
       </property>
       <property name="title">
-       <string>limitGroup</string>
+       <string/>
       </property>
       <widget class="QLabel" name="limitLabel">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>20</y>
-         <width>91</width>
+         <width>131</width>
          <height>31</height>
         </rect>
        </property>
@@ -484,16 +428,16 @@
         </font>
        </property>
        <property name="text">
-        <string>line limit</string>
+        <string>Limite de lignes :</string>
        </property>
       </widget>
       <widget class="QSpinBox" name="limitSpin">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>150</x>
          <y>20</y>
          <width>71</width>
          <height>31</height>
@@ -513,10 +457,10 @@
      <widget class="QCheckBox" name="enableLimit">
       <property name="geometry">
        <rect>
-        <x>180</x>
-        <y>55</y>
-        <width>101</width>
-        <height>31</height>
+        <x>150</x>
+        <y>70</y>
+        <width>141</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="contextMenuPolicy">
@@ -526,7 +470,74 @@
        <bool>true</bool>
       </property>
       <property name="text">
-       <string>Enable line limit</string>
+       <string>Limité le nombre de ligne </string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="printResultCB">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>240</y>
+        <width>250</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Afficher les résultats dans la console python</string>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="teamGroup">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>190</y>
+        <width>281</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <widget class="QComboBox" name="teamFilterCombo">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>16</y>
+         <width>121</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="duplicatesEnabled">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QCheckBox" name="teamActivate">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>200</y>
+        <width>151</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Activer le filtre par équipe</string>
       </property>
      </widget>
     </widget>
@@ -534,43 +545,40 @@
    <widget class="QPushButton" name="confirmButton">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>440</y>
-      <width>141</width>
-      <height>31</height>
+      <x>154</x>
+      <y>470</y>
+      <width>137</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="text">
-     <string>Fetch Data</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="sqlRequestQT">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>260</y>
-      <width>291</width>
-      <height>171</height>
-     </rect>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-    </property>
-    <property name="clearButtonEnabled">
-     <bool>true</bool>
+     <string>Récupérer les données</string>
     </property>
    </widget>
    <widget class="QPushButton" name="updButton">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>440</y>
-      <width>141</width>
-      <height>31</height>
+      <x>9</x>
+      <y>470</y>
+      <width>137</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="text">
-     <string>Update Request</string>
+     <string>Mettre à jour la requête</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="sqlRequestQT">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>300</y>
+      <width>280</width>
+      <height>160</height>
+     </rect>
+    </property>
+    <property name="backgroundVisible">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>
