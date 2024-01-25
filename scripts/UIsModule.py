@@ -2,7 +2,7 @@ import sys
 
 from PyQt5 import uic
 from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QScrollArea, QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QScrollArea, QLabel, QGridLayout
 
 from scripts.utility import selData
 
@@ -10,10 +10,14 @@ from scripts.utility import selData
 class promptMenu(QMainWindow, QWidget):
     def __init__(self, sport):
         super().__init__()
-        uic.loadUi("./data/UIs/RequestOptions.ui", self)
+        uic.loadUi("./data/UIs/RequestOptionsFR.ui", self)
         self.results_displayer = None
 
         self.limit = None
+        self.groupBy = None
+        self.medalFilter = None
+        self.timeFilter = None
+        self.teamFilter = None
         self.sqlRequestText = None
         self.sport = sport
 
@@ -21,75 +25,70 @@ class promptMenu(QMainWindow, QWidget):
         self.timer.timeout.connect(self.updEnables)
         self.timer.start(100)
 
-        self.setFixedSize(310, 480)
-
         self.updButton.clicked.connect(self.refreshRequest)
         self.confirmButton.clicked.connect(self.confirmButton_clicked)
-        self.sqlRequestQT.setPlaceholderText("[This is where the data is displayed]\nCan be edited directly")
+        self.sqlRequestQT.setPlaceholderText("[Requête SQL est affichée **ici**]")
 
-        data = selData(f"SELECT Team FROM olympicsdb WHERE sport LIKE '{self.sport}' GROUP BY Team")
-        for i in range(len(data[1])):
-            self.teamFilterCombo.addItem(data[1][i])
+        teamData = selData(f"SELECT Team FROM olympicsdb WHERE sport LIKE '{self.sport}' GROUP BY Team;")
+        for i in range(len(teamData[1])):
+            self.teamFilterCombo.addItem(teamData[1][i])
 
-    def updEnables(self):
+        headers = selData(f"SELECT Name, Team, Sport, Games, Medal FROM olympicsdb WHERE sport LIKE 'NULL';")
+        for i in range(len(headers[0])):
+            self.sortByCB.addItem(headers[0][i])
+
+    def updEnables(self): # This is hidious LOL
         if self.activateTime.isChecked():
+            self.timeGroup.setEnabled(True)
             if self.activateUnder.isChecked():
                 self.minTime.setEnabled(True)
                 self.maxTime.setEnabled(False)
+                self.timeFilter = f"Games < '{self.minTime.value()}%'"
 
             elif self.activateUpper.isChecked():
                 self.minTime.setEnabled(False)
                 self.maxTime.setEnabled(True)
+                self.timeFilter = f"Games > '{self.maxTime.value()}%'"
 
             elif self.activateBoth.isChecked():
                 self.minTime.setEnabled(True)
                 self.maxTime.setEnabled(True)
+                self.timeFilter = f"Games < '{self.maxTime.value()}' AND Games > '{self.minTime.value()}'"
         else:
-            self.minTime.setEnabled(False)
-            self.maxTime.setEnabled(False)
+            self.timeGroup.setEnabled(False)
+            self.timeFilter = None
 
         if self.teamActivate.isChecked():
             self.teamFilterCombo.setEnabled(True)
+            self.teamFilter = f"Team LIKE '{str(self.teamFilterCombo.currentText())}'"
         else:
             self.teamFilterCombo.setEnabled(False)
+            self.teamFilter = None
 
         if self.enableLimit.isChecked():
-            self.limitSpin.setEnabled(True)
-        else:
-            self.limitSpin.setEnabled(False)
-
-    def refreshRequest(self):
-        ###### Activation Buttons ######
-        medalFilter, timeFilter, teamFilter = None, None, None
-
-        # This is obnoxious...
-        if self.activateTime.isChecked():
-            if self.activateUnder.isChecked():
-                timeFilter = f"Games < '{self.minTime.value()}%'"
-
-            elif self.activateUpper.isChecked():
-                timeFilter = f"Games > '{self.maxTime.value()}%'"
-
-            elif self.activateBoth.isChecked():
-                timeFilter = f"Games < '{self.maxTime.value()}' AND Games > '{self.minTime.value()}'"
-        else:
-            timeFilter = None
-
-        if self.teamActivate.isChecked():
-            teamFilter = f"Team LIKE '{str(self.teamFilterCombo.currentText())}'"
-        else:
-            teamFilter = None
-
-        if self.enableLimit.isChecked():
+            self.limitGroup.setEnabled(True)
             self.limit = f"LIMIT {self.limitSpin.value()}"
         else:
+            self.limitGroup.setEnabled(False)
             self.limit = None
 
+        if self.enableSortBy.isChecked():
+            self.sortingGroup.setEnabled(True)
+            self.groupBy = f" {self.sortByCB.currentText()}"
+
+            if self.ascendingRatio.isChecked():
+                self.groupBy += ""
+            elif self.descendingRatio.isChecked():
+                self.groupBy += " DESC"
+        else:
+            self.sortingGroup.setEnabled(False)
+            self.groupBy = None
+
+    def refreshRequest(self):
         ###### ################## ######
         medalFilter = self.checkMedal()
-        WHERE = self.updateWHERE(medalFilter, timeFilter, teamFilter)
-        self.setSQLRequestText(
-            f"SELECT Name, Team, Sport, Games, Medal FROM olympicsdb WHERE Sport LIKE '{self.sport}'{WHERE}")
+        WHERE = self.updateWHERE(medalFilter, self.timeFilter, self.teamFilter)
+        self.setSQLRequestText(f"SELECT Name, Team, Sport, Games, Medal FROM olympicsdb WHERE Sport LIKE '{self.sport}'{WHERE}")
 
     def updateWHERE(self, a0: str, a1: str, a2: str):
         if a0 is not None and a1 is not None and a2 is not None:
@@ -131,25 +130,34 @@ class promptMenu(QMainWindow, QWidget):
             return 'Medal = "Bronze"'
 
     def setSQLRequestText(self, text):
-        self.sqlRequestQT.setText(text)
+        self.sqlRequestQT.setPlainText(text)
 
     def confirmButton_clicked(self):
         global app
-        string = str(self.sqlRequestQT.text())
-        if self.limit is not None:
-            string += f" GROUP BY Name {self.limit};"
+        string = str(self.sqlRequestQT.toPlainText())
+        string += " ORDER BY"
+
+        # Sorting the data by...
+        if self.groupBy is not None:
+            string += f"{self.groupBy}"
         else:
-            string += " GROUP BY Name;"
+            string += " Name"
+
+        # Defining the limit
+        if self.limit is not None:
+            string += f" {self.limit}"
+        string += ";"
+        # Fetching the data
         data = selData(string)
+
+        # Printing the data fetched
         if self.printResultCB.isChecked():
             print(data)
             print("########## NEW REQUEST ##########")
             if data[1]:
                 i = 0
-                while i <= len(data[1]) - 5:
-                    print(
-                        f"{data[0][0]}: {data[1][i]:50}| {data[0][1]}: {data[1][i + 1]:40}| {data[0][2]}: {data[1][i + 2]:12}| {data[0][3]}: {data[1][i + 3]:12}| {data[0][4]}: {data[1][i + 4]}")
-                    i += 5
+                for i in range(0, len(data[1]), 5):
+                    print(f"{data[0][0]}: {data[1][i]:50}| {data[0][1]}: {data[1][i + 1]:40}| {data[0][2]}: {data[1][i + 2]:12}| {data[0][3]}: {data[1][i + 3]:12}| {data[0][4]}: {data[1][i + 4]}")
             else:
                 print("Data Fletched is empty. SQL Request may be done wrongfully. Please try again.")
 
@@ -165,41 +173,46 @@ class promptMenu(QMainWindow, QWidget):
 class ResultsDisplayer(QWidget):
     def __init__(self, data):
         super().__init__()
-        if data is not None:
-            print("data successfully fetched")
-            print(data)
 
-        widthWin, heightWin = 500, 500
+        widthWin, heightWin = 750, 500
 
         self.setWindowTitle("Test UI")
         self.setFixedSize(widthWin, heightWin)
+
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
+
         self.scroll_area = QScrollArea()
-        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setGeometry(10, 10, 500, 400)
 
         widget = QWidget()
         widget_layout = QVBoxLayout()
         widget.setLayout(widget_layout)
 
-        labelHeader, labelValues = None, None
-
         if data is not None and data[1]:
             headers = data[0]
-            labelHeader = QLabel(f"{headers[0]:60} {headers[1]:40} {headers[2]:20} {headers[3]:20} {headers[4]}")
-            widget_layout.addWidget(labelHeader)
+            lenghtHeader = len(headers)
 
-            if data[1]:
-                i = 0
-                while i <= len(data[1]) - 5:
-                    values = f"{data[1][i]:60} {data[1][i + 1]:40} {data[1][i + 2]:12} {data[1][i + 3]:12} {data[1][i + 4]}"
-                    labelValues = QLabel(values)
-                    i += 5
+            grid_layout = QGridLayout()
+            widget_layout.addLayout(grid_layout)
+
+            for positionHeader in range(lenghtHeader):
+                headerLabel = QLabel(headers[positionHeader])
+                grid_layout.addWidget(headerLabel, 0, positionHeader)
+
+            for index in range(0, len(data[1]), 5):
+                startingIndex = index
+                afterIndex = index + lenghtHeader
+                row_data = data[1][startingIndex:afterIndex]
+
+                for item in range(len(row_data)):
+                    valueLabel = QLabel(row_data[item])
+                    grid_layout.addWidget(valueLabel, index + 1, item)
+
         else:
-            label = QLabel("The data fetched is empty")
-            widget_layout.addWidget(label)
+            label_empty = QLabel("The data fetched is empty")
+            widget_layout.addWidget(label_empty)
 
-        widget_layout.addWidget(labelValues)
         self.scroll_area.setWidget(widget)
         self.layout.addWidget(self.scroll_area)
 

@@ -266,7 +266,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>précédent:</string>
+        <string>avant:</string>
        </property>
       </widget>
      </widget>

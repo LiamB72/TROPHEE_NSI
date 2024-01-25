@@ -159,13 +159,13 @@ class gameProgram:
 
                 # When key pressed
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q or event.key == pygame.K_a:
+                    if event.key == pygame.K_q or event.key == pygame.K_a or event.key == pygame.K_LEFT:
                         self.x_mov[0] = True
-                    if event.key == pygame.K_d:
+                    if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                         self.x_mov[1] = True
-                    if event.key == pygame.K_z or event.key == pygame.K_w:
+                    if event.key == pygame.K_z or event.key == pygame.K_w or event.key == pygame.K_UP:
                         self.y_mov[0] = True
-                    if event.key == pygame.K_s:
+                    if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                         self.y_mov[1] = True
 
                     if event.key == pygame.K_t:
@@ -188,13 +188,13 @@ class gameProgram:
 
                 # When key released
                 if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_q or event.key == pygame.K_a:
+                    if event.key == pygame.K_q or event.key == pygame.K_a or event.key == pygame.K_LEFT:
                         self.x_mov[0] = False
-                    if event.key == pygame.K_d:
+                    if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                         self.x_mov[1] = False
-                    if event.key == pygame.K_z or event.key == pygame.K_w:
+                    if event.key == pygame.K_z or event.key == pygame.K_w or event.key == pygame.K_UP:
                         self.y_mov[0] = False
-                    if event.key == pygame.K_s:
+                    if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                         self.y_mov[1] = False
 
                 ###### ---------------------------------------- ######
