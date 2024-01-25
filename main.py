@@ -1,7 +1,9 @@
-# Berge Liam -> Coder
-# Reeves Guillaume -> Coder
-# Vix -> Designer
-
+"""
+File Created By BERGE Liam & REEVES Guillaume
+Graphics Made by Vix (SCARPA Ayden)
+Created on 2023-12-04
+Last Updated on 2024-01-25
+"""
 import sys
 import pygame
 from scripts.playerModule import player
@@ -205,4 +207,3 @@ class gameProgram:
 
 
 gameProgram().run()
-
