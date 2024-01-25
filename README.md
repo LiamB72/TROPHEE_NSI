@@ -1,4 +1,4 @@
-# This is a derived branch mainly updated by Liam
+# This is a derived branch is only updated by Liam
 
 ## Project made for the Trophee of NSI
 
