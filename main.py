@@ -59,6 +59,7 @@ class gameProgram:
     def run(self):
 
         while True:
+            # Dictionary of every rectangle and their text
             sportTeleporters = {
                 "Rowing": {"CollisionBox": pygame.Rect(-170, 230, 30, 30),
                            "Description": {"Text": self.font.render("Rowing", False, self.colors["White"]),
@@ -170,6 +171,7 @@ class gameProgram:
                     if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                         self.y_mov[1] = True
 
+                    # Opens the custom command prompt (ccp)
                     if event.key == pygame.K_t:
                         text = str(openUI(cMenu))
                         if text != "":
