@@ -7,7 +7,7 @@ import sys
 
 from PyQt5 import uic
 from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QWidget, QVBoxLayout, QScrollArea, QLabel, QGridLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QWidget, QScrollArea, QVBoxLayout, QHBoxLayout, QLabel, QPlainTextEdit, QPushButton, QGridLayout
 
 from scripts.utility import selData
 
@@ -29,12 +29,12 @@ class promptMenu(QMainWindow, QWidget):
 
         self.setWindowTitle(f"{sport} - Requête SQL Créateur")
 
+        self.request = None
         self.limit = None
         self.sortBy = None
         self.medalFilter = None
         self.timeFilter = None
         self.teamFilter = None
-        self.sqlRequestText = None
         self.sport = sport
 
         self.timer = QTimer(self)
@@ -168,20 +168,20 @@ class promptMenu(QMainWindow, QWidget):
         :param text: Str
         :return: None
         """
-        string = str(text)
-        string += " ORDER BY"
+        self.request = str(text)
+        self.request += " ORDER BY"
 
         # Sorting the data by else
         if self.sortBy is not None:
-            string += f"{self.sortBy}"
+            self.request += f"{self.sortBy}"
         else:
-            string += " Name"
+            self.request += " Name"
 
         # Defining the limit
         if self.limit is not None:
-            string += f" {self.limit}"
-        string += ";"
-        self.sqlRequestQT.setPlainText(string)
+            self.request += f" {self.limit}"
+        self.request += ";"
+        self.sqlRequestQT.setPlainText(self.request)
 
     def confirmButton_clicked(self):
         """
@@ -191,10 +191,9 @@ class promptMenu(QMainWindow, QWidget):
         Finally, it closes itself and opens another window to display the result in a formatted way.
         """
         global app
-        string = str(self.sqlRequestQT.toPlainText())
 
         # Fetching the data
-        data = selData(string)
+        data = selData(self.request)
 
         # Printing the data fetched if "print result" is checked
         if self.printResultCB.isChecked():
@@ -208,7 +207,7 @@ class promptMenu(QMainWindow, QWidget):
 
         self.close()
 
-        self.results_displayer = ResultsDisplayer(data)
+        self.results_displayer = ResultsDisplayer(data, self.request)
         self.results_displayer.show()
         if app is None:
             app = QApplication(sys.argv)
@@ -216,50 +215,98 @@ class promptMenu(QMainWindow, QWidget):
 
 
 class ResultsDisplayer(QWidget):
-    def __init__(self, data):
+    def __init__(self, data: list, request: str):
         super().__init__()
+        self.request = request
+        self.data = data
 
-        widthWin, heightWin = 750, 500
+        self.sport = data[1][2]
+        self.initUI()
 
-        self.setWindowTitle(f"Result Displayer: {data[1][2]}")
+    def initUI(self):
+        widthWin, heightWin = 800, 500
+        self.setWindowTitle(f"Result Displayer: {self.sport}")
         self.setFixedSize(widthWin, heightWin)
 
-        self.layout = QVBoxLayout()
-        self.setLayout(self.layout)
+        main_layout = QVBoxLayout(self)
+        top_layout = QHBoxLayout()
+        bottom_layout = QHBoxLayout()
 
-        self.scroll_area = QScrollArea()
-        self.scroll_area.setGeometry(10, 10, 10, 10)
+        ############## SCROLL AREA CODE ##############
 
-        widget = QWidget()
-        widget_layout = QVBoxLayout()
-        widget.setLayout(widget_layout)
+        # Create the scroll area
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
 
-        if data is not None and data[1]:
-            headers = data[0]
-            lenghtHeader = len(headers)
+        # Define Variables for later usage
+        scroll_area_insides = QWidget()
+        scroll_area_layout = QVBoxLayout(scroll_area_insides)
+        scroll_area_insides.setLayout(scroll_area_layout)
 
-            grid_layout = QGridLayout()
-            widget_layout.addLayout(grid_layout)
+        scroll_area.setWidget(scroll_area_insides)
+        scroll_area_grid = QGridLayout()
 
-            for positionHeader in range(lenghtHeader):
+        ## Code In-Between ##
+        if self.data is not None and self.data[1]:
+            headers = self.data[0]
+            lengthHeader = len(headers)
+
+            for positionHeader in range(lengthHeader):
                 headerLabel = QLabel(headers[positionHeader])
-                grid_layout.addWidget(headerLabel, 0, positionHeader)
+                scroll_area_grid.addWidget(headerLabel, 0, positionHeader)
 
-            for index in range(0, len(data[1]), 5):
-                startingIndex = index
-                afterIndex = index + lenghtHeader
-                row_data = data[1][startingIndex:afterIndex]
+            for i in range(0, len(self.data[1]), lengthHeader):
+                startingIndex = i
+                afterIndex = i + lengthHeader
+                row_data = self.data[1][startingIndex:afterIndex]
 
-                for item in range(len(row_data)):
-                    valueLabel = QLabel(row_data[item])
-                    grid_layout.addWidget(valueLabel, index + 1, item)
-
+                for j in range(len(row_data)):
+                    valueLabel = QLabel(row_data[j])
+                    scroll_area_grid.addWidget(valueLabel, i + 1, j)
         else:
             label_empty = QLabel("The data fetched is empty")
-            widget_layout.addWidget(label_empty)
+            scroll_area_layout.addWidget(label_empty)
+        #####################
 
-        self.scroll_area.setWidget(widget)
-        self.layout.addWidget(self.scroll_area)
+        scroll_area_layout.addLayout(scroll_area_grid)
+        scroll_area_insides.setLayout(scroll_area_layout)
+        scroll_area.setWidget(scroll_area_insides)
+
+        ##############################################
+
+        top_layout.addWidget(scroll_area)
+
+        ############## BUTTON CODE ##############
+
+        image = QLabel()
+        image.setFixedSize(250, self.height())
+
+        # pixmap = QPixmap(f"./data/{self.sport}.png")
+        # image.setIcon(QIcon(pixmap))
+        # image.setIconSize(pixmap.size())
+        # image.setMaximumSize(pixmap.size())
+        # image.setMinimumSize(pixmap.size())
+
+        top_layout.addWidget(image)
+
+        #########################################
+
+        main_layout.addLayout(top_layout)
+        main_layout.addSpacing(10)
+
+        ############## LINE EDIT CODE ##############
+
+        plainTextEdit = QPlainTextEdit(self.request)
+        plainTextEdit.setReadOnly(True)
+        if self.request == "":
+            plainTextEdit.setPlaceholderText("SQL Request hasn't loaded correctly")
+
+        bottom_layout.addWidget(plainTextEdit)
+
+        ############################################
+
+        main_layout.addLayout(bottom_layout)
+        self.setLayout(main_layout)
 
 
 class cMenu(QMainWindow):
