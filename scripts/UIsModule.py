@@ -7,7 +7,7 @@ import sys
 
 from PyQt5 import uic
 from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QScrollArea, QLabel, QGridLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QWidget, QVBoxLayout, QScrollArea, QLabel, QGridLayout
 
 from scripts.utility import selData
 
@@ -21,15 +21,13 @@ class promptMenu(QMainWindow, QWidget):
     """
     def __init__(self, sport):
         """
-
-        :param sport: str
         Initialises most of the variables for the request-making and UI showing
         """
         super().__init__()
         uic.loadUi("./data/UIs/RequestOptionsFR.ui", self)
         self.results_displayer = None
 
-        self.setWindowTitle(sport)
+        self.setWindowTitle(f"{sport} - Requête SQL Créateur")
 
         self.limit = None
         self.sortBy = None
@@ -77,7 +75,7 @@ class promptMenu(QMainWindow, QWidget):
             elif self.activateBoth.isChecked():
                 self.minTime.setEnabled(True)
                 self.maxTime.setEnabled(True)
-                self.timeFilter = f"Games < '{self.maxTime.value()}' AND Games > '{self.minTime.value()}'"
+                self.timeFilter = f"Games > '{self.maxTime.value()}%' AND Games < '{self.minTime.value()}%'"
         else:
             self.timeGroup.setEnabled(False)
             self.timeFilter = None
@@ -113,9 +111,10 @@ class promptMenu(QMainWindow, QWidget):
         Refresh the SQL request sorted inside the SQLRequestText element of the PyQT5 Window,
         all through what's been checked and activated.
         """
+        self.confirmButton.setEnabled(True)
         medalFilter = self.checkMedal()
         WHERE = self.updateWHERE(medalFilter)
-        self.setSQLRequestText(f"SELECT Name, Team, Sport, Games, Medal FROM olympicsdb WHERE Sport LIKE '{self.sport}'{WHERE}")
+        self.setSQLRequestText(f"SELECT DISTINCT Name, Team, Sport, Games, Medal FROM olympicsdb WHERE Sport LIKE '{self.sport}'{WHERE}")
 
     def updateWHERE(self, a0: str):
         """
@@ -139,6 +138,8 @@ class promptMenu(QMainWindow, QWidget):
             return f" AND {self.timeFilter}"
         elif self.teamFilter is not None:
             return f" AND {self.teamFilter}"
+
+        return ""
 
     def checkMedal(self):
         """
@@ -167,15 +168,7 @@ class promptMenu(QMainWindow, QWidget):
         :param text: Str
         :return: None
         """
-        self.sqlRequestQT.setPlainText(text)
-
-    def confirmButton_clicked(self):
-        """
-        Complex but overall simple.
-        Finis
-        """
-        global app
-        string = str(self.sqlRequestQT.toPlainText())
+        string = str(text)
         string += " ORDER BY"
 
         # Sorting the data by else
@@ -188,10 +181,22 @@ class promptMenu(QMainWindow, QWidget):
         if self.limit is not None:
             string += f" {self.limit}"
         string += ";"
+        self.sqlRequestQT.setPlainText(string)
+
+    def confirmButton_clicked(self):
+        """
+        Complex but overall simple.
+        Gets the string of the SQLrequest text Box
+        Then fetch the data.
+        Finally, it closes itself and opens another window to display the result in a formatted way.
+        """
+        global app
+        string = str(self.sqlRequestQT.toPlainText())
+
         # Fetching the data
         data = selData(string)
 
-        # Printing the data fetched
+        # Printing the data fetched if "print result" is checked
         if self.printResultCB.isChecked():
             print(data)
             print("########## NEW REQUEST ##########")
@@ -216,14 +221,14 @@ class ResultsDisplayer(QWidget):
 
         widthWin, heightWin = 750, 500
 
-        self.setWindowTitle("Test UI")
+        self.setWindowTitle(f"Result Displayer: {data[1][2]}")
         self.setFixedSize(widthWin, heightWin)
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
 
         self.scroll_area = QScrollArea()
-        self.scroll_area.setGeometry(10, 10, 500, 400)
+        self.scroll_area.setGeometry(10, 10, 10, 10)
 
         widget = QWidget()
         widget_layout = QVBoxLayout()
@@ -271,6 +276,14 @@ class cMenu(QMainWindow):
 
 
 app = QApplication(sys.argv)
+
+def openHelpWindow(string: str):
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Information)
+    msg.setWindowIcon(QIcon("./data/QTImages/information.png"))
+    msg.setText(string)
+    msg.setWindowTitle("Aide")
+    msg.exec_()
 
 
 def openUI(className, option01=None):
