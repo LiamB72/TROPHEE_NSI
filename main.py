@@ -37,20 +37,23 @@ class gameProgram:
 
         self.debugMode = False
 
-        # You can see the code for it in the playerModule.py file
+        # This dictionary is used to load images
         self.assets = {
             'player': img_loader('entities/player/player_s2smol.png'),
         }
+
+        # Player scrip
         self.player_size = (self.assets['player'].get_width(), self.assets['player'].get_height())
-        print(self.player_size)
         self.player_SpeedFactor = 2
         self.player = player(self, 'player', (138, 130), self.player_size)
         self.playerRect = pygame.Rect(self.player.entity_pos[0], self.player.entity_pos[1],
                                       self.player.size[0], self.player.size[1])
 
+        # Create the variables used for the camera
         self.camera_offset_x = -(self.player.entity_pos[0] - self.display_width / 2)
         self.camera_offset_y = -(self.player.entity_pos[1] - self.display_height / 2)
 
+        # Creates rects that blocks the player off
         self.limitLeft = pygame.Rect(-245, 0, 5, self.display_height)
         self.limitRight = pygame.Rect(self.display_width + 240, 0, 5, self.display_height)
         self.limitUp = pygame.Rect(-245, 0, self.display_width + 490, 5)
