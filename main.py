@@ -38,13 +38,15 @@ class gameProgram:
         self.debugMode = False
 
         # You can see the code for it in the playerModule.py file
-        self.player_SpeedFactor = 2
-        self.player = player(self, 'player', (138, 130), (28, 30))
-        self.playerRect = pygame.Rect(self.player.entity_pos[0] + 9, self.player.entity_pos[1],
-                                      self.player.size[0] - 10, self.player.size[1])
         self.assets = {
-            'player': img_loader('entities/player/playerImg.png'),
+            'player': img_loader('entities/player/player_s2smol.png'),
         }
+        self.player_size = (self.assets['player'].get_width(), self.assets['player'].get_height())
+        print(self.player_size)
+        self.player_SpeedFactor = 2
+        self.player = player(self, 'player', (138, 130), self.player_size)
+        self.playerRect = pygame.Rect(self.player.entity_pos[0], self.player.entity_pos[1],
+                                      self.player.size[0], self.player.size[1])
 
         self.camera_offset_x = -(self.player.entity_pos[0] - self.display_width / 2)
         self.camera_offset_y = -(self.player.entity_pos[1] - self.display_height / 2)
@@ -95,7 +97,8 @@ class gameProgram:
                              }
             }
 
-            self.display.fill((30, 30, 30))  # Renders the screen black
+            ###### Renders the screen behind everything ######
+            self.display.fill((30, 30, 30))
 
 
             ###### ----------- COLLISIONS CHECKING ----------- ######
@@ -124,7 +127,9 @@ class gameProgram:
                 text_rect.midtop = collision_box.midbottom
 
                 # Just draws the rectangle and text
-                pygame.draw.rect(self.display, self.colors["Gray"], collision_box)
+                if self.debugMode:
+                    pygame.draw.rect(self.display, self.colors["Gray"], collision_box)
+
                 self.display.blit(description_text, text_rect)
 
                 if self.player.collisionCheck(data["CollisionBox"], 10, "wall"):
@@ -143,13 +148,13 @@ class gameProgram:
 
             ###### ----------- PLAYER UPDATES ----------- ######
 
-            if self.debugMode:
-                pygame.draw.rect(self.display, self.colors["Gray"], self.playerRect.move(self.camera.topleft))
             self.player.render(self.display)
             self.player.update(((self.x_mov[1] - self.x_mov[0]) * self.player_SpeedFactor, 0))
             self.player.update((0, (self.y_mov[1] - self.y_mov[0]) * self.player_SpeedFactor))
-            self.playerRect = pygame.Rect(self.player.entity_pos[0] + 9, self.player.entity_pos[1],
-                                          self.player.size[0] - 10, self.player.size[1])
+            self.playerRect = pygame.Rect(self.player.entity_pos[0], self.player.entity_pos[1],
+                                          self.player.size[0], self.player.size[1])
+            if self.debugMode:
+                pygame.draw.rect(self.display, self.colors["Gray"], self.playerRect.move(self.camera.topleft))
 
             ###### -------------------------------------- ######
 

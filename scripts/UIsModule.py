@@ -53,6 +53,7 @@ class promptMenu(QMainWindow, QWidget):
         for i in range(len(headers[0])):
             self.sortByCB.addItem(headers[0][i])
 
+    ########### Update Method ##########
     def updEnables(self):
         """
         On a cycle of 100ms, basically a timer, loops through what's activated
@@ -60,18 +61,23 @@ class promptMenu(QMainWindow, QWidget):
         After checking what's checked, it enables or disables QWidgets in the UI to
         make the application overall more readable.
         """
+        ############### Activating The Time Frames ##############
         if self.activateTime.isChecked():
             self.timeGroup.setEnabled(True)
+
+            ############### Activating the before time spinBox ##############
             if self.activateUnder.isChecked():
                 self.minTime.setEnabled(True)
                 self.maxTime.setEnabled(False)
                 self.timeFilter = f"Games < '{self.minTime.value()}%'"
 
+            ###############  Activating the after time spinBox ##############
             elif self.activateUpper.isChecked():
                 self.minTime.setEnabled(False)
                 self.maxTime.setEnabled(True)
                 self.timeFilter = f"Games > '{self.maxTime.value()}%'"
 
+            ###############  Activating both times spinBox to make an interval ##############
             elif self.activateBoth.isChecked():
                 self.minTime.setEnabled(True)
                 self.maxTime.setEnabled(True)
@@ -80,6 +86,7 @@ class promptMenu(QMainWindow, QWidget):
             self.timeGroup.setEnabled(False)
             self.timeFilter = None
 
+        ###############  Activating Team filter ##############
         if self.teamActivate.isChecked():
             self.teamFilterCombo.setEnabled(True)
             self.teamFilter = f"Team LIKE '{str(self.teamFilterCombo.currentText())}'"
@@ -87,6 +94,7 @@ class promptMenu(QMainWindow, QWidget):
             self.teamFilterCombo.setEnabled(False)
             self.teamFilter = None
 
+        ##############  Activating a prompt/fetch output limit ##############
         if self.enableLimit.isChecked():
             self.limitGroup.setEnabled(True)
             self.limit = f"LIMIT {self.limitSpin.value()}"
@@ -94,12 +102,15 @@ class promptMenu(QMainWindow, QWidget):
             self.limitGroup.setEnabled(False)
             self.limit = None
 
+        ##############  Activating a sorting by category ##############
         if self.enableSortBy.isChecked():
             self.sortingGroup.setEnabled(True)
             self.sortBy = f" {self.sortByCB.currentText()}"
 
+            ################  Setting the sort by ascending ##############
             if self.ascendingRatio.isChecked():
                 self.sortBy += ""
+            ################  Setting the sort by descending ##############
             elif self.descendingRatio.isChecked():
                 self.sortBy += " DESC"
         else:
@@ -206,7 +217,7 @@ class promptMenu(QMainWindow, QWidget):
                 print("Data Fletched is empty. SQL Request may be done wrongfully. Please try again.")
 
         self.close()
-
+        ############## opening a new pyqt5 window. ##############
         self.results_displayer = ResultsDisplayer(data, self.request)
         self.results_displayer.show()
         if app is None:

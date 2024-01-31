@@ -17,9 +17,8 @@ class player:
         self.spdFac = self.game.player_SpeedFactor
 
     def update(self, movement=(0, 0)):
-        frame_movement = (movement[0] + self.vel[0], movement[1] + self.vel[1])
-        self.entity_pos[0] += frame_movement[0]
-        self.entity_pos[1] += frame_movement[1]
+        self.entity_pos[0] += movement[0]
+        self.entity_pos[1] += movement[1]
 
     def render(self, surface):
         surface.blit(self.game.assets['player'], (self.entity_pos[0] + self.game.camera_offset_x, self.entity_pos[1] + self.game.camera_offset_y))
