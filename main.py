@@ -40,6 +40,7 @@ class gameProgram:
         # This dictionary is used to load images
         self.assets = {
             'player': img_loader('entities/player/player_s2smol.png'),
+            'bg': img_loader('bg.png')
         }
 
         # Player scrip
@@ -100,9 +101,7 @@ class gameProgram:
                              }
             }
 
-            ###### Renders the screen behind everything ######
-            self.display.fill((30, 30, 30))
-
+            self.display.blit(self.assets['bg'], (0, 0))
 
             ###### ----------- COLLISIONS CHECKING ----------- ######
 
