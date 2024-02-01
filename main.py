@@ -27,7 +27,6 @@ class gameProgram:
 
         self.font = pygame.font.SysFont("Courier New", 18)
         self.clock = pygame.time.Clock()  # Fps variable
-        self.camera = pygame.Rect(0, 0, self.display_width, self.display_height)
 
         self.x_mov = [False, False]  # Used to check left and right key detection
         self.y_mov = [False, False]  # Same but for the up and down
@@ -37,22 +36,25 @@ class gameProgram:
 
         self.debugMode = False
 
-        # This dictionary is used to load images
+        # This dictionary is used to load images from data/images/
         self.assets = {
             'player': img_loader('entities/player/player_s2smol.png'),
-            'bg': img_loader('bg.png')
+            'bg': img_loader('bg_by_maywulf.png')
         }
+
+        self.bg = self.assets['bg']
+        self.bg_size = (self.bg.get_width(), self.bg.get_height())
 
         # Player scrip
         self.player_size = (self.assets['player'].get_width(), self.assets['player'].get_height())
-        self.player_SpeedFactor = 2
+        self.spdFactor = 2.5
         self.player = player(self, 'player', (138, 130), self.player_size)
-        self.playerRect = pygame.Rect(self.player.entity_pos[0], self.player.entity_pos[1],
-                                      self.player.size[0], self.player.size[1])
 
         # Create the variables used for the camera
-        self.camera_offset_x = -(self.player.entity_pos[0] - self.display_width / 2)
-        self.camera_offset_y = -(self.player.entity_pos[1] - self.display_height / 2)
+        self.camera = pygame.Rect(0, 0, self.display_width, self.display_height)
+        self.camera_offset_x = -(self.player.playerPos[0] - self.display_width / 2)
+        self.camera_offset_y = -(self.player.playerPos[1] - self.display_height / 2)
+        self.camera_offset = [0, 0]
 
         # Creates rects that blocks the player off
         self.limitLeft = pygame.Rect(-245, 0, 5, self.display_height)
@@ -65,6 +67,8 @@ class gameProgram:
     def run(self):
 
         while True:
+            self.display.fill((0, 0, 0))
+            self.display.blit(self.bg, ((-self.bg_size[0] // 2) + self.camera_offset[0], (-self.bg_size[1] // 2) + self.camera_offset[1]))
             # Dictionary of every rectangle and their text
             sportTeleporters = {
                 "Rowing": {"CollisionBox": pygame.Rect(-170, 230, 30, 30),
@@ -101,8 +105,6 @@ class gameProgram:
                              }
             }
 
-            self.display.blit(self.assets['bg'], (0, 0))
-
             ###### ----------- COLLISIONS CHECKING ----------- ######
 
             for i in range(len(self.collisionList)):
@@ -112,16 +114,16 @@ class gameProgram:
 
             ###### ----------- CAMERA UPADTES ----------- ######
 
-            self.camera_offset_x = -(self.player.entity_pos[0] + 12 - self.display_width / 2)
-            self.camera_offset_y = -(self.player.entity_pos[1] + 20 - self.display_height / 2)
-            self.camera.topleft = (self.camera_offset_x, self.camera_offset_y)
+            self.camera_offset_x = -(self.player.playerPos[0] + self.player_size[0] / 2 - self.display_width / 2)
+            self.camera_offset_y = -(self.player.playerPos[1] + self.player_size[1] / 2 - self.display_height / 2)
+            self.camera_offset = [self.camera_offset_x, self.camera_offset_y]
 
             ###### ------------------------------------- ######
 
             ###### ----------- DRAWING ONTO DISPLAY ----------- ######
 
             for sport, data in sportTeleporters.items():
-                collision_box = data["CollisionBox"].move(self.camera.topleft)
+                collision_box = data["CollisionBox"].move(self.camera_offset)
                 description_text = data["Description"]["Text"]
 
                 # Puts the text in relative to the rectangle and its hitbox
@@ -134,29 +136,26 @@ class gameProgram:
 
                 self.display.blit(description_text, text_rect)
 
-                if self.player.collisionCheck(data["CollisionBox"], 10, "wall"):
+                if self.player.collisionCheck(data["CollisionBox"], 10):
                     openUI(promptMenu, sport)
 
             if self.debugMode:
                 fpsText = self.font.render(f"FPS: {self.clock.get_fps():.0f}", False, self.colors["White"])
-                self.display.blit(fpsText, (15, 25))
+                playerPosText = self.font.render(f"Pos: {self.player.playerPos[0]:.0f}, {self.player.playerPos[1]:.0f}", False, self.colors["White"])
+                cameraOffText = self.font.render(f"CamOffset: {self.camera_offset[0]:.0f}, {self.camera_offset[1]:.0f}", False, self.colors["White"])
 
-                playerPosText = self.font.render(
-                    f"Pos: {self.player.entity_pos[0]:.0f}, {self.player.entity_pos[1]:.0f}", False,
-                    self.colors["White"])
+                self.display.blit(fpsText, (15, 25))
                 self.display.blit(playerPosText, (15, 45))
+                self.display.blit(cameraOffText, (15, 65))
 
             ###### -------------------------------------------- ######
 
             ###### ----------- PLAYER UPDATES ----------- ######
 
             self.player.render(self.display)
-            self.player.update(((self.x_mov[1] - self.x_mov[0]) * self.player_SpeedFactor, 0))
-            self.player.update((0, (self.y_mov[1] - self.y_mov[0]) * self.player_SpeedFactor))
-            self.playerRect = pygame.Rect(self.player.entity_pos[0], self.player.entity_pos[1],
-                                          self.player.size[0], self.player.size[1])
+            self.player.update(((self.x_mov[1] - self.x_mov[0]) * self.spdFactor, (self.y_mov[1] - self.y_mov[0]) * self.spdFactor))
             if self.debugMode:
-                pygame.draw.rect(self.display, self.colors["Gray"], self.playerRect.move(self.camera.topleft))
+                pygame.draw.rect(self.display, self.colors["Gray"], self.player.playerRect().move(self.camera_offset))
 
             ###### -------------------------------------- ######
 
@@ -188,7 +187,7 @@ class gameProgram:
                             parameters.extend(args)
                             if parameters:
                                 if c == "tp" or c == "teleport":
-                                    self.player.entity_pos = [float(parameters[0]), float(parameters[1])]
+                                    self.player.playerPos = [float(parameters[0]), float(parameters[1])]
                                 elif c == "debug" or c == "debugger" or c == "db":
                                     if parameters[0] == "True":
                                         self.debugMode = True
@@ -211,7 +210,7 @@ class gameProgram:
                 ###### ---------------------------------------- ######
 
             self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))
-            pygame.display.update()
+            pygame.display.flip()
             self.clock.tick(60)
 
 

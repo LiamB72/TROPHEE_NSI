@@ -123,34 +123,29 @@ class promptMenu(QMainWindow, QWidget):
         all through what's been checked and activated.
         """
         self.confirmButton.setEnabled(True)
-        medalFilter = self.checkMedal()
-        WHERE = self.updateWHERE(medalFilter)
-        self.setSQLRequestText(f"SELECT DISTINCT Name, Team, Sport, Games, Medal FROM olympicsdb WHERE Sport LIKE '{self.sport}'{WHERE}")
-
-    def updateWHERE(self, a0: str):
+        self.medalFilter = self.checkMedal()
+        whereConditionFiller = self.updateWHERE()
+        self.setSQLRequestText(f"SELECT DISTINCT Name, Team, Sport, Games, Medal FROM olympicsdb WHERE Sport LIKE '{self.sport}'{whereConditionFiller}")
+    def updateWHERE(self):
         """
         Method being used when the request is being refreshed
         Overall hardcoded, it checks what was chosen within the options possible.
-        :param a0: Str (medalFilter)
         """
-        if a0 is not None and self.timeFilter is not None and self.teamFilter is not None:
-            return f" AND {a0} AND {self.timeFilter} AND {self.teamFilter}"
+        # No need to hardcode, just add segments, depending on whenever
+        # the self-variables are None or not, to the final string, with some ifs.
+        # Put the a0 component as a self-variable.
+        # There is no need to put any args else than self, as everything, including the final string, is supposed
+        # to be self-variables.
+        fillter = ""
+        if self.medalFilter is not None:
+            fillter += f" AND {self.medalFilter}"
+        if self.timeFilter is not None:
+            fillter += f" AND {self.timeFilter}"
+        if self.teamFilter is not None:
+            fillter += f" AND {self.teamFilter}"
 
-        elif a0 is not None and self.timeFilter is not None:
-            return f" AND {a0} AND {self.timeFilter}"
-        elif a0 is not None and self.teamFilter is not None:
-            return f" AND {a0} AND {self.teamFilter}"
-        elif self.timeFilter is not None and self.teamFilter is not None:
-            return f" AND {self.timeFilter} AND {self.teamFilter}"
+        return fillter
 
-        elif a0 is not None:
-            return f" AND {a0}"
-        elif self.timeFilter is not None:
-            return f" AND {self.timeFilter}"
-        elif self.teamFilter is not None:
-            return f" AND {self.teamFilter}"
-
-        return ""
 
     def checkMedal(self):
         """
