@@ -7,9 +7,10 @@ import sys
 
 from PyQt5 import uic
 from PyQt5.QtCore import QTimer
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QWidget, QScrollArea, QVBoxLayout, QHBoxLayout, QLabel, QPlainTextEdit, QPushButton, QGridLayout
 
-from scripts.utility import selData
+from scripts.utility import selData, img_loader
 
 
 class promptMenu(QMainWindow, QWidget):
@@ -284,14 +285,15 @@ class ResultsDisplayer(QWidget):
 
         ############## BUTTON CODE ##############
 
-        image = QLabel()
-        image.setFixedSize(250, self.height())
+        image = QPushButton()
+        image.setFixedSize(0, 0)
 
-        # pixmap = QPixmap(f"./data/{self.sport}.png")
-        # image.setIcon(QIcon(pixmap))
-        # image.setIconSize(pixmap.size())
-        # image.setMaximumSize(pixmap.size())
-        # image.setMinimumSize(pixmap.size())
+        pixmap = QPixmap(f"./data/images/pixmaps/{self.sport}.png")
+        image.setIcon(QIcon(pixmap))
+        image.setIconSize(pixmap.size())
+        print(pixmap.size())
+        image.setMaximumSize(pixmap.size())
+        image.setMinimumSize(pixmap.size())
 
         top_layout.addWidget(image)
 

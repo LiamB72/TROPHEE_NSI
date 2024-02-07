@@ -17,7 +17,7 @@ def img_loader(path):
     return img
 
 
-def load_img(path):
+def load_imgs(path):
     images = []
     for img_name in os.listdir(BASE_IMG_PATH + path):
         images.append(img_loader(path + '/' + img_name))
