@@ -47,8 +47,7 @@ class gameProgram:
 
         # Player scrip
         self.player_size = (self.assets['player'].get_width(), self.assets['player'].get_height())
-        self.spdFactor = 2.5
-        self.player = player(self, 'player', (138, 130), self.player_size)
+        self.player = player(self, 'player', (138, 130), self.player_size, 2.5)
 
         # Create the variables used for the camera
         self.camera = pygame.Rect(0, 0, self.display_width, self.display_height)
@@ -153,7 +152,8 @@ class gameProgram:
             ###### ----------- PLAYER UPDATES ----------- ######
 
             self.player.render(self.display)
-            self.player.update(((self.x_mov[1] - self.x_mov[0]) * self.spdFactor, (self.y_mov[1] - self.y_mov[0]) * self.spdFactor))
+            self.player.update(((self.x_mov[1] - self.x_mov[0]) * self.player.spdFactor, 0))
+            self.player.update((0, (self.y_mov[1] - self.y_mov[0]) * self.player.spdFactor.spdFactor))
             if self.debugMode:
                 pygame.draw.rect(self.display, self.colors["Gray"], self.player.playerRect().move(self.camera_offset))
 

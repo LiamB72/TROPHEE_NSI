@@ -7,14 +7,13 @@ import pygame
 
 
 class player:
-    def __init__(self, game, entity_type, pos, size):
+    def __init__(self, game, entity_type, pos, size, spdFactor=1):
 
         self.game = game
         self.type = entity_type
         self.playerPos = list(pos)
         self.size = size
-        self.vel = [0, 0]
-        self.spdFac = self.game.spdFactor
+        self.spdFac = spdFactor
 
     def playerRect(self):
         return pygame.Rect(self.playerPos[0], self.playerPos[1], self.size[0], self.size[1])
