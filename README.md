@@ -3,6 +3,6 @@
 On this project, we have currently 3 people,
 One Artist, 2 coders.
 
-Vix = Artist  
-Greeves0 = Coder  
-LiamB (Me) = Coder  
+Vix/Lucy/Lucyfer = Artist  
+Greeves0/StormyComputer = Coder  
+LiamB = Coder  
