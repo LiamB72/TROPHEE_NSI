@@ -1,3 +1,8 @@
+"""
+File Created By BERGE Liam
+Created on 2024-01-08
+Last Update on 2024-01-25
+"""
 import sqlite3
 import pandas as pd
 

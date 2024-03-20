@@ -1,7 +1,9 @@
-# Berge Liam -> Coder
-# Reeves Guillaume -> Coder
-# Vix -> Designer
-
+"""
+File Created By BERGE Liam & REEVES Guillaume
+Graphics Made by Vix (SCARPA Ayden)
+Created on 2023-12-04
+Last Updated on 2024-01-25
+"""
 import sys
 import pygame
 from scripts.playerModule import player
@@ -25,7 +27,6 @@ class gameProgram:
 
         self.font = pygame.font.SysFont("Courier New", 18)
         self.clock = pygame.time.Clock()  # Fps variable
-        self.camera = pygame.Rect(0, 0, self.display_width, self.display_height)
 
         self.x_mov = [False, False]  # Used to check left and right key detection
         self.y_mov = [False, False]  # Same but for the up and down
@@ -35,18 +36,26 @@ class gameProgram:
 
         self.debugMode = False
 
-        # You can see the code for it in the playerModule.py file
-        self.player_SpeedFactor = 2
-        self.player = player(self, 'player', (138, 130), (28, 30))
-        self.playerRect = pygame.Rect(self.player.entity_pos[0] + 9, self.player.entity_pos[1],
-                                      self.player.size[0] - 10, self.player.size[1])
+        # This dictionary is used to load images from data/images/
         self.assets = {
-            'player': img_loader('entities/player/playerImg.png'),
+            'player': img_loader('entities/player/player_s2smol.png'),
+            'bg': img_loader('bg_by_maywulf.png')
         }
 
-        self.camera_offset_x = -(self.player.entity_pos[0] - self.display_width / 2)
-        self.camera_offset_y = -(self.player.entity_pos[1] - self.display_height / 2)
+        self.bg = self.assets['bg']
+        self.bg_size = (self.bg.get_width(), self.bg.get_height())
 
+        # Player scrip
+        self.player_size = (self.assets['player'].get_width(), self.assets['player'].get_height())
+        self.player = player(self, 'player', (138, 130), self.player_size, 2.5)
+
+        # Create the variables used for the camera
+        self.camera = pygame.Rect(0, 0, self.display_width, self.display_height)
+        self.camera_offset_x = -(self.player.playerPos[0] - self.display_width / 2)
+        self.camera_offset_y = -(self.player.playerPos[1] - self.display_height / 2)
+        self.camera_offset = [0, 0]
+
+        # Creates rects that blocks the player off
         self.limitLeft = pygame.Rect(-245, 0, 5, self.display_height)
         self.limitRight = pygame.Rect(self.display_width + 240, 0, 5, self.display_height)
         self.limitUp = pygame.Rect(-245, 0, self.display_width + 490, 5)
@@ -57,6 +66,9 @@ class gameProgram:
     def run(self):
 
         while True:
+            self.display.fill((0, 0, 0))
+            self.display.blit(self.bg, ((-self.bg_size[0] // 2) + self.camera_offset[0], (-self.bg_size[1] // 2) + self.camera_offset[1]))
+            # Dictionary of every rectangle and their text
             sportTeleporters = {
                 "Rowing": {"CollisionBox": pygame.Rect(-170, 230, 30, 30),
                            "Description": {"Text": self.font.render("Rowing", False, self.colors["White"]),
@@ -92,9 +104,6 @@ class gameProgram:
                              }
             }
 
-            self.display.fill((30, 30, 30))  # Renders the screen black
-
-
             ###### ----------- COLLISIONS CHECKING ----------- ######
 
             for i in range(len(self.collisionList)):
@@ -104,16 +113,16 @@ class gameProgram:
 
             ###### ----------- CAMERA UPADTES ----------- ######
 
-            self.camera_offset_x = -(self.player.entity_pos[0] + 12 - self.display_width / 2)
-            self.camera_offset_y = -(self.player.entity_pos[1] + 20 - self.display_height / 2)
-            self.camera.topleft = (self.camera_offset_x, self.camera_offset_y)
+            self.camera_offset_x = -(self.player.playerPos[0] + self.player_size[0] / 2 - self.display_width / 2)
+            self.camera_offset_y = -(self.player.playerPos[1] + self.player_size[1] / 2 - self.display_height / 2)
+            self.camera_offset = [self.camera_offset_x, self.camera_offset_y]
 
             ###### ------------------------------------- ######
 
             ###### ----------- DRAWING ONTO DISPLAY ----------- ######
 
             for sport, data in sportTeleporters.items():
-                collision_box = data["CollisionBox"].move(self.camera.topleft)
+                collision_box = data["CollisionBox"].move(self.camera_offset)
                 description_text = data["Description"]["Text"]
 
                 # Puts the text in relative to the rectangle and its hitbox
@@ -121,32 +130,32 @@ class gameProgram:
                 text_rect.midtop = collision_box.midbottom
 
                 # Just draws the rectangle and text
-                pygame.draw.rect(self.display, self.colors["Gray"], collision_box)
+                if self.debugMode:
+                    pygame.draw.rect(self.display, self.colors["Gray"], collision_box)
+
                 self.display.blit(description_text, text_rect)
 
-                if self.player.collisionCheck(data["CollisionBox"], 10, "wall"):
+                if self.player.collisionCheck(data["CollisionBox"], 10):
                     openUI(promptMenu, sport)
 
             if self.debugMode:
                 fpsText = self.font.render(f"FPS: {self.clock.get_fps():.0f}", False, self.colors["White"])
-                self.display.blit(fpsText, (15, 25))
+                playerPosText = self.font.render(f"Pos: {self.player.playerPos[0]:.0f}, {self.player.playerPos[1]:.0f}", False, self.colors["White"])
+                cameraOffText = self.font.render(f"CamOffset: {self.camera_offset[0]:.0f}, {self.camera_offset[1]:.0f}", False, self.colors["White"])
 
-                playerPosText = self.font.render(
-                    f"Pos: {self.player.entity_pos[0]:.0f}, {self.player.entity_pos[1]:.0f}", False,
-                    self.colors["White"])
+                self.display.blit(fpsText, (15, 25))
                 self.display.blit(playerPosText, (15, 45))
+                self.display.blit(cameraOffText, (15, 65))
 
             ###### -------------------------------------------- ######
 
             ###### ----------- PLAYER UPDATES ----------- ######
 
-            if self.debugMode:
-                pygame.draw.rect(self.display, self.colors["Gray"], self.playerRect.move(self.camera.topleft))
             self.player.render(self.display)
-            self.player.update(((self.x_mov[1] - self.x_mov[0]) * self.player_SpeedFactor, 0))
-            self.player.update((0, (self.y_mov[1] - self.y_mov[0]) * self.player_SpeedFactor))
-            self.playerRect = pygame.Rect(self.player.entity_pos[0] + 9, self.player.entity_pos[1],
-                                          self.player.size[0] - 10, self.player.size[1])
+            self.player.update(((self.x_mov[1] - self.x_mov[0]) * self.player.spdFactor, 0))
+            self.player.update((0, (self.y_mov[1] - self.y_mov[0]) * self.player.spdFactor.spdFactor))
+            if self.debugMode:
+                pygame.draw.rect(self.display, self.colors["Gray"], self.player.playerRect().move(self.camera_offset))
 
             ###### -------------------------------------- ######
 
@@ -159,15 +168,16 @@ class gameProgram:
 
                 # When key pressed
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q or event.key == pygame.K_a:
+                    if event.key == pygame.K_q or event.key == pygame.K_a or event.key == pygame.K_LEFT:
                         self.x_mov[0] = True
-                    if event.key == pygame.K_d:
+                    if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                         self.x_mov[1] = True
-                    if event.key == pygame.K_z or event.key == pygame.K_w:
+                    if event.key == pygame.K_z or event.key == pygame.K_w or event.key == pygame.K_UP:
                         self.y_mov[0] = True
-                    if event.key == pygame.K_s:
+                    if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                         self.y_mov[1] = True
 
+                    # Opens the custom command prompt (ccp)
                     if event.key == pygame.K_t:
                         text = str(openUI(cMenu))
                         if text != "":
@@ -177,7 +187,7 @@ class gameProgram:
                             parameters.extend(args)
                             if parameters:
                                 if c == "tp" or c == "teleport":
-                                    self.player.entity_pos = [float(parameters[0]), float(parameters[1])]
+                                    self.player.playerPos = [float(parameters[0]), float(parameters[1])]
                                 elif c == "debug" or c == "debugger" or c == "db":
                                     if parameters[0] == "True":
                                         self.debugMode = True
@@ -188,21 +198,20 @@ class gameProgram:
 
                 # When key released
                 if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_q or event.key == pygame.K_a:
+                    if event.key == pygame.K_q or event.key == pygame.K_a or event.key == pygame.K_LEFT:
                         self.x_mov[0] = False
-                    if event.key == pygame.K_d:
+                    if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                         self.x_mov[1] = False
-                    if event.key == pygame.K_z or event.key == pygame.K_w:
+                    if event.key == pygame.K_z or event.key == pygame.K_w or event.key == pygame.K_UP:
                         self.y_mov[0] = False
-                    if event.key == pygame.K_s:
+                    if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                         self.y_mov[1] = False
 
                 ###### ---------------------------------------- ######
 
             self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))
-            pygame.display.update()
+            pygame.display.flip()
             self.clock.tick(60)
 
 
 gameProgram().run()
-
