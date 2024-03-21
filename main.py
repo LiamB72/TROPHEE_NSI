@@ -152,8 +152,8 @@ class gameProgram:
             ###### ----------- PLAYER UPDATES ----------- ######
 
             self.player.render(self.display)
-            self.player.update(((self.x_mov[1] - self.x_mov[0]) * self.player.spdFactor, 0))
-            self.player.update((0, (self.y_mov[1] - self.y_mov[0]) * self.player.spdFactor.spdFactor))
+            self.player.update(((self.x_mov[1] - self.x_mov[0]) * self.player.spdFac, 0))
+            self.player.update((0, (self.y_mov[1] - self.y_mov[0]) * self.player.spdFac))
             if self.debugMode:
                 pygame.draw.rect(self.display, self.colors["Gray"], self.player.playerRect().move(self.camera_offset))
 
