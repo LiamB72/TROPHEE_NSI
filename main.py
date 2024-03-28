@@ -47,7 +47,7 @@ class gameProgram:
 
         # Player scrip
         self.player_size = (self.assets['player'].get_width(), self.assets['player'].get_height())
-        self.player = player(self, 'player', (138, 130), self.player_size, 2.5)
+        self.player = player(self, 'player', (138, 130), self.player_size, 2)
 
         # Create the variables used for the camera
         self.camera = pygame.Rect(0, 0, self.display_width, self.display_height)
@@ -211,7 +211,7 @@ class gameProgram:
 
             self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))
             pygame.display.flip()
-            self.clock.tick(60)
+            self.clock.tick(360)
 
 
 gameProgram().run()

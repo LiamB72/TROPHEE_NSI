@@ -291,7 +291,6 @@ class ResultsDisplayer(QWidget):
         pixmap = QPixmap(f"./data/images/pixmaps/{self.sport}.png")
         image.setIcon(QIcon(pixmap))
         image.setIconSize(pixmap.size())
-        print(pixmap.size())
         image.setMaximumSize(pixmap.size())
         image.setMinimumSize(pixmap.size())
 
