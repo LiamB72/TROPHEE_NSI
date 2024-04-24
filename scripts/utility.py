@@ -10,14 +10,21 @@ import sqlite3
 BASE_IMG_PATH = 'data/images/'
 
 
-def img_loader(path):
+def img_loader(path) -> pygame.image:
+    """data/images/{path}
+    Loads the single image from the path.
+    need to specify the image to load, with both the name and extension of the file."""
     img = pygame.image.load(BASE_IMG_PATH + path).convert()
     img.set_colorkey((0, 0, 0))
+    img = pygame.transform.scale(img, (img.get_width() // 2, img.get_height() // 2))
 
     return img
 
 
-def load_imgs(path):
+def load_imgs(path) -> list[pygame.image]:
+    """data/images/{path}
+    Then loads the differents images found within the specified directory.
+    also, no need to add the '/' at the end, to specify the directory."""
     images = []
     for img_name in os.listdir(BASE_IMG_PATH + path):
         images.append(img_loader(path + '/' + img_name))

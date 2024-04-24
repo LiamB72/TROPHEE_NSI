@@ -283,7 +283,7 @@ class ResultsDisplayer(QWidget):
 
         top_layout.addWidget(scroll_area)
 
-        ############## BUTTON CODE ##############
+        ############## IMAGE CODE ##############
 
         image = QPushButton()
         image.setFixedSize(0, 0)
@@ -317,21 +317,27 @@ class ResultsDisplayer(QWidget):
 
 
 class cMenu(QMainWindow):
+    """
+    Creates a debug window that lets you input a line of command
+    such as "tp x y" or "db True/False", which in order lets
+    the player teleport an x and y coordinates, or change the debug mode to True or False.
+    """
     def __init__(self):
         super().__init__()
-        uic.loadUi("./data/UIs/cMenu.ui", self)
+        uic.loadUi("./data/UIs/cMenu.ui", self) # Loads the ui element
         self.result_text = None
         self.lineEdit.returnPressed.connect(self.closeUI)
         self.pushButton.clicked.connect(self.closeUI)
 
     def closeUI(self):
-        self.result_text = self.lineEdit.text()
-        self.close()
+        self.result_text = self.lineEdit.text() # Gets the text from the line edit to return it
+        self.close()    # Closes the ui.
 
 
 app = QApplication(sys.argv)
 
 def openHelpWindow(string: str):
+    ## Opens a help window
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Information)
     msg.setWindowIcon(QIcon("./data/QTImages/information.png"))
@@ -341,6 +347,9 @@ def openHelpWindow(string: str):
 
 
 def openUI(className, option01=None):
+    """
+    Opens a new UI depending on the className and option01 if there are any required.
+    """
     global app
     widget = None
 
