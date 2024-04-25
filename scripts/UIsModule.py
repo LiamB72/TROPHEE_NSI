@@ -10,7 +10,7 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QWidget, QScrollArea, QVBoxLayout, QHBoxLayout, QLabel, QPlainTextEdit, QPushButton, QGridLayout
 
-from scripts.utility import selData, img_loader
+from scripts.utility import selData
 
 
 class promptMenu(QMainWindow, QWidget):
@@ -285,7 +285,7 @@ class ResultsDisplayer(QWidget):
         image = QPushButton()
         image.setFixedSize(0, 0)
 
-        pixmap = QPixmap(f"./data/images/pixmaps/{self.sport}.png")
+        pixmap = QPixmap(f"./data/images/QTImages/pixmaps/{self.sport}.png")
         image.setIcon(QIcon(pixmap))
         image.setIconSize(pixmap.size())
         image.setMaximumSize(pixmap.size())
