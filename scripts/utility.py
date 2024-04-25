@@ -21,7 +21,7 @@ def img_loader(path) -> pygame.image:
     return img
 
 
-def load_imgs(path) -> list[pygame.image]:
+def load_imgs(path) -> list:
     """data/images/{path}
     Then loads the differents images found within the specified directory.
     also, no need to add the '/' at the end, to specify the directory."""

@@ -231,9 +231,8 @@ class ResultsDisplayer(QWidget):
         self.initUI()
 
     def initUI(self):
-        widthWin, heightWin = 800, 500
         self.setWindowTitle(f"Result Displayer: {self.sport}")
-        self.setFixedSize(widthWin, heightWin)
+        self.setFixedSize(800, 500)
 
         main_layout = QVBoxLayout(self)
         top_layout = QHBoxLayout()
@@ -281,8 +280,6 @@ class ResultsDisplayer(QWidget):
 
         ##############################################
 
-        top_layout.addWidget(scroll_area)
-
         ############## IMAGE CODE ##############
 
         image = QPushButton()
@@ -295,6 +292,9 @@ class ResultsDisplayer(QWidget):
         image.setMinimumSize(pixmap.size())
 
         top_layout.addWidget(image)
+
+        top_layout.addWidget(scroll_area)
+
 
         #########################################
 
