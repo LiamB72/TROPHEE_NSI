@@ -44,11 +44,12 @@ class gameProgram:
             'floor': img_loader("tiles/floor.png"),
             'corner': img_loader("tiles/corner.png"),
             'portal': pygame.transform.scale(img_loader("tiles/portal.png"), (50, 50)),
-            # 'bg': img_loader('bg_by_maywulf.png')
+            'bg': pygame.transform.scale(pygame.image.load('data/images/tiles/idea-bg_trophee-nsi.png').convert(), (950, 750))
         }
 
-        # self.bg = self.assets['bg']
-        # self.bg_size = (self.bg.get_width(), self.bg.get_height())
+        self.p_w, self.p_h = self.assets['portal'].get_width(), self.assets['portal'].get_height()
+        self.bg = self.assets['bg']
+
 
         # Player scrip
         self.player = player(self, 'player', (138, 130), 3)
@@ -60,10 +61,10 @@ class gameProgram:
         self.camera_offset = [0, 0]
 
         # Creates rects that blocks the player off
-        self.limitLeft = pygame.Rect(-245, 0, 5, self.display_height)
-        self.limitRight = pygame.Rect(self.display_width + 240, 0, 5, self.display_height)
-        self.limitUp = pygame.Rect(-245, 0, self.display_width + 490, 5)
-        self.limitDown = pygame.Rect(-245, self.display_height - 5, self.display_width + 490, 5)
+        self.limitLeft = pygame.Rect(-100, 0, 5, self.display_height)
+        self.limitRight = pygame.Rect(420, 0, 5, self.display_height)
+        self.limitUp = pygame.Rect(-100, 0, self.display_width + 490, 5)
+        self.limitDown = pygame.Rect(-100, self.display_height - 5, self.display_width + 490, 5)
 
         self.collisionList = [self.limitLeft, self.limitRight, self.limitUp, self.limitDown]
 
@@ -71,33 +72,33 @@ class gameProgram:
 
         while True:
             self.display.fill((0, 0, 0))
-            # self.display.blit(self.bg, ((-self.bg_size[0] // 2) + self.camera_offset[0], (-self.bg_size[1] // 2) + self.camera_offset[1])) ##Scrappped itdea of a bg image
+            self.display.blit(self.bg, (-225 + self.camera_offset[0], -125 + self.camera_offset[1]))
             # Dictionary of every rectangle and their text
             sportTeleporters = {
 
-                "Gymnastics":   {"CollisionBox": pygame.Rect(0, 30, 50, 50),
+                "Gymnastics":   {"CollisionBox": pygame.Rect(0, 30, self.p_w, self.p_h),
                                  "Description": {"Text": self.font.render("Gymnastics", False, self.colors["White"])}
                                 },
-                "Rowing":       {"CollisionBox": pygame.Rect(100, 30, 50, 50),
+                "Rowing":       {"CollisionBox": pygame.Rect(100, 30, self.p_w, self.p_h),
                                  "Description": {"Text": self.font.render("Rowing", False, self.colors["White"])}
                                 },
-                "Cycling":      {"CollisionBox": pygame.Rect(200, 30, 50, 50),
+                "Cycling":      {"CollisionBox": pygame.Rect(200, 30, self.p_w, self.p_h),
                                  "Description": {"Text": self.font.render("Cycling", False, self.colors["White"])}
                                 },
-                "Football":     {"CollisionBox": pygame.Rect(300, 30, 50, 50),
+                "Football":     {"CollisionBox": pygame.Rect(300, 30, self.p_w, self.p_h),
                                  "Description": {"Text": self.font.render("Football", False, self.colors["White"])}
                                 },
 
-                "Athletics":    {"CollisionBox": pygame.Rect(0, 270, 50, 50),
+                "Athletics":    {"CollisionBox": pygame.Rect(0, 270, self.p_w, self.p_h),
                                  "Description": {"Text": self.font.render("Athletics", False, self.colors["White"])}
                                 },
-                "Hockey":       {"CollisionBox": pygame.Rect(100, 270, 50, 50),
+                "Hockey":       {"CollisionBox": pygame.Rect(100, 270, self.p_w, self.p_h),
                                  "Description": {"Text": self.font.render("Hockey", False, self.colors["White"])}
                                 },
-                "Sailing":      {"CollisionBox": pygame.Rect(200, 270, 50, 50),
+                "Sailing":      {"CollisionBox": pygame.Rect(200, 270, self.p_w, self.p_h),
                                  "Description": {"Text": self.font.render("Sailing", False, self.colors["White"])}
                                 },
-                "Swimming":     {"CollisionBox": pygame.Rect(300, 270, 50, 50),
+                "Swimming":     {"CollisionBox": pygame.Rect(300, 270, self.p_w, self.p_h),
                                  "Description": {"Text": self.font.render("Swimming", False, self.colors["White"])}
                                 }
             }
@@ -179,6 +180,7 @@ class gameProgram:
 
                     # Opens the custom command prompt (ccp)
                     if event.key == pygame.K_t:
+                        """
                         text = str(openUI(cMenu))
                         if text != "":
                             args, parameters = text.split(), []
@@ -195,6 +197,8 @@ class gameProgram:
                                         self.debugMode = False
                             else:
                                 print(f"No Value Provided to {c}")
+                        """
+                        self.debugMode = not self.debugMode
 
                 # When key released
                 if event.type == pygame.KEYUP:

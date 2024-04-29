@@ -242,6 +242,7 @@ class ResultsDisplayer(QWidget):
 
         # Create the scroll area
         scroll_area = QScrollArea()
+        scroll_area.setFixedSize(500, 400)
         scroll_area.setWidgetResizable(True)
 
         # Define Variables for later usage
@@ -280,6 +281,8 @@ class ResultsDisplayer(QWidget):
 
         ##############################################
 
+        top_layout.addWidget(scroll_area)
+
         ############## IMAGE CODE ##############
 
         image = QPushButton()
@@ -288,13 +291,11 @@ class ResultsDisplayer(QWidget):
         pixmap = QPixmap(f"./data/images/QTImages/pixmaps/{self.sport}.png")
         image.setIcon(QIcon(pixmap))
         image.setIconSize(pixmap.size())
-        image.setMaximumSize(pixmap.size())
+        image.setMaximumSize(200, 300)
         image.setMinimumSize(pixmap.size())
 
+        top_layout.addSpacing(5)
         top_layout.addWidget(image)
-
-        top_layout.addWidget(scroll_area)
-
 
         #########################################
 
