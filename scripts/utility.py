@@ -1,7 +1,7 @@
 """
 File Created By BERGE Liam
 Created on 2023-12-05
-Last Update on 2024-01-25
+Last Update on 2024-04-29
 """
 import os
 import pygame
@@ -31,6 +31,14 @@ def load_imgs(path) -> list:
     return images
 
 def selData(request):
+    """Connects to the database in ./data/database/ to return a table with values if the request is made correctly.
+
+    Args:
+        request (string): the request provided and made by the user
+
+    Returns:
+        tuple: returns a tuple with the name of the keys and the values associated  
+    """
     print(request, "\n")
     db = sqlite3.connect(database='./data/database/olympicsDB.db')
     requestExecutor = db.cursor()

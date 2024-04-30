@@ -2,13 +2,13 @@
 File Created By BERGE Liam & REEVES Guillaume
 Graphics Made by Vix (SCARPA Ayden)
 Created on 2023-12-04
-Last Updated on 2024-01-25
+Last Updated on 2024-04-29
 """
 import sys
 import pygame
 from scripts.playerModule import player
 from scripts.utility import img_loader, load_imgs
-from scripts.UIsModule import openUI, cMenu, promptMenu, ResultsDisplayer
+from scripts.UIsModule import openUI, cMenu, promptMenu
 
 pygame.init()
 

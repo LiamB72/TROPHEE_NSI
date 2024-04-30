@@ -1,7 +1,7 @@
 """
 File Created By BERGE Liam & REEVES Guillaume
 Created on 2023-12-05
-Last Update on 2024-01-25
+Last Update on 2024-04-29
 """
 import sys
 
@@ -285,13 +285,12 @@ class ResultsDisplayer(QWidget):
 
         ############## IMAGE CODE ##############
 
-        image = QPushButton()
+        image = QLabel()
         image.setFixedSize(0, 0)
 
         pixmap = QPixmap(f"./data/images/QTImages/pixmaps/{self.sport}.png")
-        image.setIcon(QIcon(pixmap))
-        image.setIconSize(pixmap.size())
-        image.setMaximumSize(200, 300)
+        image.setPixmap(pixmap)
+        image.setMaximumSize(pixmap.size())
         image.setMinimumSize(pixmap.size())
 
         top_layout.addSpacing(5)
