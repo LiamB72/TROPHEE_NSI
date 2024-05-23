@@ -5,21 +5,15 @@ Last Update on 2024-04-29
 """
 import sys
 
-from PyQt5 import uic
-from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QWidget, QScrollArea, QVBoxLayout, QHBoxLayout, QLabel, QPlainTextEdit, QPushButton, QGridLayout
+from PyQt6 import uic
+from PyQt6.QtCore import QTimer
+from PyQt6.QtGui import QIcon, QPixmap
+from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QWidget, QScrollArea, QVBoxLayout, QHBoxLayout, QLabel, QPlainTextEdit, QPushButton, QGridLayout
 
 from scripts.utility import selData
 
 
 class promptMenu(QMainWindow, QWidget):
-    """
-    Shows a User Interface (commonly known as a UI) where the user
-    is prompted to activate checks and to choose across many options
-    what kind of request do they want.
-    Overall, the code is mostly hardcoded T-T.
-    """
     def __init__(self, sport):
         """
         Initialises most of the variables for the request-making and UI showing
@@ -28,7 +22,7 @@ class promptMenu(QMainWindow, QWidget):
         uic.loadUi("./data/UIs/RequestOptionsFR.ui", self)
         self.results_displayer = None
 
-        self.setWindowTitle(f"{sport} - Requête SQL Créateur")
+        self.setWindowTitle(f"{sport} - Créateur de requêtes SQL ")
 
         self.request = None
         self.limit = None
@@ -44,7 +38,7 @@ class promptMenu(QMainWindow, QWidget):
 
         self.updButton.clicked.connect(self.refreshRequest)
         self.confirmButton.clicked.connect(self.confirmButton_clicked)
-        self.sqlRequestQT.setPlaceholderText("[Requête SQL est affichée **ici**]")
+        self.sqlRequestQT.setPlaceholderText("[Requête SQL est affichée **ici**. Vous pouvez modifier la requête manuellement, cependant, ne pas se plaindre ci cette dernière ne fonction plus apres l'avoir modifiée manuellement.]")
 
         teamData = selData(f"SELECT Team FROM olympicsdb WHERE sport LIKE '{self.sport}' GROUP BY Team;")
         for i in range(len(teamData[1])):
@@ -64,7 +58,7 @@ class promptMenu(QMainWindow, QWidget):
         """
         ############### Activating The Time Frames ##############
         if self.activateTime.isChecked():
-            self.timeGroup.setEnabled(True)
+            self.timeFilterFrame.setEnabled(True)
 
             ############### Activating the before time spinBox ##############
             if self.activateUnder.isChecked():
@@ -84,28 +78,28 @@ class promptMenu(QMainWindow, QWidget):
                 self.maxTime.setEnabled(True)
                 self.timeFilter = f"Games > '{self.maxTime.value()}%' AND Games < '{self.minTime.value()}%'"
         else:
-            self.timeGroup.setEnabled(False)
+            self.timeFilterFrame.setEnabled(False)
             self.timeFilter = None
 
         ###############  Activating Team filter ##############
         if self.teamActivate.isChecked():
-            self.teamFilterCombo.setEnabled(True)
+            self.teamFilterFrame.setEnabled(True)
             self.teamFilter = f"Team LIKE '{str(self.teamFilterCombo.currentText())}'"
         else:
-            self.teamFilterCombo.setEnabled(False)
+            self.teamFilterFrame.setEnabled(False)
             self.teamFilter = None
 
         ##############  Activating a prompt/fetch output limit ##############
         if self.enableLimit.isChecked():
-            self.limitGroup.setEnabled(True)
+            self.limitFrame.setEnabled(True)
             self.limit = f"LIMIT {self.limitSpin.value()}"
         else:
-            self.limitGroup.setEnabled(False)
+            self.limitFrame.setEnabled(False)
             self.limit = None
 
         ##############  Activating a sorting by category ##############
         if self.enableSortBy.isChecked():
-            self.sortingGroup.setEnabled(True)
+            self.filterSortByFrame.setEnabled(True)
             self.sortBy = f" {self.sortByCB.currentText()}"
 
             ################  Setting the sort by ascending ##############
@@ -115,7 +109,7 @@ class promptMenu(QMainWindow, QWidget):
             elif self.descendingRatio.isChecked():
                 self.sortBy += " DESC"
         else:
-            self.sortingGroup.setEnabled(False)
+            self.filterSortByFrame.setEnabled(False)
             self.sortBy = None
 
     def refreshRequest(self):
@@ -127,6 +121,7 @@ class promptMenu(QMainWindow, QWidget):
         self.medalFilter = self.checkMedal()
         whereConditionFiller = self.updateWHERE()
         self.setSQLRequestText(f"SELECT DISTINCT Name, Team, Sport, Games, Medal FROM olympicsdb WHERE Sport LIKE '{self.sport}'{whereConditionFiller}")
+    
     def updateWHERE(self):
         """
         Method being used when the request is being refreshed
@@ -154,6 +149,7 @@ class promptMenu(QMainWindow, QWidget):
         Hardcoded too.
         :return: Str
         """
+        
         if self.goldCB.isChecked() and self.silverCB.isChecked() and self.bronzeCB.isChecked():
             return None
         elif self.goldCB.isChecked() and self.silverCB.isChecked():
@@ -202,23 +198,14 @@ class promptMenu(QMainWindow, QWidget):
         # Fetching the data
         data = selData(self.request)
 
-        # Printing the data fetched if "print result" is checked
-        if self.printResultCB.isChecked():
-            print(data)
-            print("########## NEW REQUEST ##########")
-            if data[1]:
-                for i in range(0, len(data[1]), 5):
-                    print(f"{data[0][0]}: {data[1][i]:50}| {data[0][1]}: {data[1][i + 1]:40}| {data[0][2]}: {data[1][i + 2]:12}| {data[0][3]}: {data[1][i + 3]:12}| {data[0][4]}: {data[1][i + 4]}")
-            else:
-                print("Data Fletched is empty. SQL Request may be done wrongfully. Please try again.")
-
         self.close()
-        ############## opening a new pyqt5 window. ##############
+        
+        ############## opening a new window. ##############
         self.results_displayer = ResultsDisplayer(data, self.request)
         self.results_displayer.show()
         if app is None:
             app = QApplication(sys.argv)
-        app.exec_()
+        app.exec()
 
 
 class ResultsDisplayer(QWidget):
@@ -315,35 +302,16 @@ class ResultsDisplayer(QWidget):
         main_layout.addLayout(bottom_layout)
         self.setLayout(main_layout)
 
-
-class cMenu(QMainWindow):
-    """
-    Creates a debug window that lets you input a line of command
-    such as "tp x y" or "db True/False", which in order lets
-    the player teleport an x and y coordinates, or change the debug mode to True or False.
-    """
-    def __init__(self):
-        super().__init__()
-        uic.loadUi("./data/UIs/cMenu.ui", self) # Loads the ui element
-        self.result_text = None
-        self.lineEdit.returnPressed.connect(self.closeUI)
-        self.pushButton.clicked.connect(self.closeUI)
-
-    def closeUI(self):
-        self.result_text = self.lineEdit.text() # Gets the text from the line edit to return it
-        self.close()    # Closes the ui.
-
-
 app = QApplication(sys.argv)
 
 def openHelpWindow(string: str):
     ## Opens a help window
     msg = QMessageBox()
-    msg.setIcon(QMessageBox.Information)
+    msg.setIcon(QMessageBox.Icon.Information)
     msg.setWindowIcon(QIcon("./data/QTImages/information.png"))
     msg.setText(string)
     msg.setWindowTitle("Aide")
-    msg.exec_()
+    msg.exec()
 
 
 def openUI(className, option01=None):
@@ -356,14 +324,9 @@ def openUI(className, option01=None):
     if app is None:
         app = QApplication(sys.argv)
 
-    if className == cMenu:
-        widget = cMenu()
-
     elif className == promptMenu:
         widget = promptMenu(option01)
 
-    widget.show()
-    app.exec_()
-
-    if className == cMenu:
-        return widget.result_text
+    if widget is not None:
+        widget.show()
+        app.exec()

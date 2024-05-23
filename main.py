@@ -1,21 +1,21 @@
 """
 File Created By BERGE Liam & REEVES Guillaume
-Graphics Made by Vix (SCARPA Ayden)
+Graphics Made by Vix/Lucy (SCARPA Ayden)
 Created on 2023-12-04
-Last Updated on 2024-04-29
+Last Updated on 2024-05-23
 """
 import sys
 import pygame
 from scripts.playerModule import player
 from scripts.utility import img_loader, load_imgs
-from scripts.UIsModule import openUI, cMenu, promptMenu
+from scripts.UIsModule import openUI, promptMenu
 
 pygame.init()
 
 class gameProgram:
     def __init__(self):
         # Initialises the pygame basic window configs
-        pygame.display.set_caption("Trophy NSI")
+        pygame.display.set_caption("Les J.O. aux services des bases de données: Trophée NSI")
 
         self.ratio_Factor = 2
         self.screen_width, self.screen_height = 600, 600
@@ -47,7 +47,7 @@ class gameProgram:
             'bg': pygame.transform.scale(pygame.image.load('data/images/tiles/idea-bg_trophee-nsi.png').convert(), (950, 750))
         }
 
-        self.p_w, self.p_h = self.assets['portal'].get_width(), self.assets['portal'].get_height()
+        self.portalWidth, self.portalHeight = self.assets['portal'].get_width(), self.assets['portal'].get_height()
         self.bg = self.assets['bg']
 
 
@@ -76,29 +76,29 @@ class gameProgram:
             # Dictionary of every rectangle and their text
             sportTeleporters = {
 
-                "Gymnastics":   {"CollisionBox": pygame.Rect(0, 30, self.p_w, self.p_h),
+                "Gymnastics":   {"CollisionBox": pygame.Rect(0, 30, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Gymnastics", False, self.colors["White"])}
                                 },
-                "Rowing":       {"CollisionBox": pygame.Rect(100, 30, self.p_w, self.p_h),
+                "Rowing":       {"CollisionBox": pygame.Rect(120, 30, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Rowing", False, self.colors["White"])}
                                 },
-                "Cycling":      {"CollisionBox": pygame.Rect(200, 30, self.p_w, self.p_h),
+                "Cycling":      {"CollisionBox": pygame.Rect(240, 30, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Cycling", False, self.colors["White"])}
                                 },
-                "Football":     {"CollisionBox": pygame.Rect(300, 30, self.p_w, self.p_h),
+                "Football":     {"CollisionBox": pygame.Rect(360, 30, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Football", False, self.colors["White"])}
                                 },
 
-                "Athletics":    {"CollisionBox": pygame.Rect(0, 270, self.p_w, self.p_h),
+                "Athletics":    {"CollisionBox": pygame.Rect(0, 270, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Athletics", False, self.colors["White"])}
                                 },
-                "Hockey":       {"CollisionBox": pygame.Rect(100, 270, self.p_w, self.p_h),
+                "Hockey":       {"CollisionBox": pygame.Rect(120, 270, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Hockey", False, self.colors["White"])}
                                 },
-                "Sailing":      {"CollisionBox": pygame.Rect(200, 270, self.p_w, self.p_h),
+                "Sailing":      {"CollisionBox": pygame.Rect(240, 270, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Sailing", False, self.colors["White"])}
                                 },
-                "Swimming":     {"CollisionBox": pygame.Rect(300, 270, self.p_w, self.p_h),
+                "Swimming":     {"CollisionBox": pygame.Rect(360, 270, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Swimming", False, self.colors["White"])}
                                 }
             }
@@ -119,15 +119,19 @@ class gameProgram:
             ###### ------------------------------------- ######
 
             ###### ----------- DRAWING ONTO DISPLAY ----------- ######
-
+            index = 0
             for sport, data in sportTeleporters.items():
+                index += 1
                 collision_box = data["CollisionBox"].move(self.camera_offset)
                 self.display.blit(self.assets["portal"], (data["CollisionBox"].x + self.camera_offset_x, data["CollisionBox"].y + self.camera_offset_y))
                 description_text = data["Description"]["Text"]
 
                 # Puts the text in relative to the rectangle and its hitbox
                 text_rect = description_text.get_rect()
-                text_rect.midtop = (collision_box.midbottom[0], (collision_box.midbottom[1] + 20))
+                if index <= 4:
+                    text_rect.midtop = (collision_box.midbottom[0], (collision_box.midbottom[1] + 20))
+                else:
+                    text_rect.midtop = (collision_box.midbottom[0], (collision_box.midbottom[1] - self.portalHeight - 40))
 
                 # Just draws the rectangle and text
                 if self.debugMode:
@@ -180,24 +184,6 @@ class gameProgram:
 
                     # Opens the custom command prompt (ccp)
                     if event.key == pygame.K_t:
-                        """
-                        text = str(openUI(cMenu))
-                        if text != "":
-                            args, parameters = text.split(), []
-                            c = args.pop(0)
-                            c = c.lower()
-                            parameters.extend(args)
-                            if parameters:
-                                if c == "tp" or c == "teleport":
-                                    self.player.playerPos = [float(parameters[0]), float(parameters[1])]
-                                elif c == "debug" or c == "debugger" or c == "db":
-                                    if parameters[0] == "True":
-                                        self.debugMode = True
-                                    elif parameters[0] == "False":
-                                        self.debugMode = False
-                            else:
-                                print(f"No Value Provided to {c}")
-                        """
                         self.debugMode = not self.debugMode
 
                 # When key released
