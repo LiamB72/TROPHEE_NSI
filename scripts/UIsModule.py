@@ -20,6 +20,7 @@ class promptMenu(QMainWindow, QWidget):
         """
         super().__init__()
         uic.loadUi("./data/UIs/RequestOptionsFR.ui", self)
+        self.setWindowIcon(QIcon("./data/images/icons/placeholder.png")) # To be changed
         self.results_displayer = None
 
         self.setWindowTitle(f"{sport} - Créateur de requêtes SQL ")
@@ -211,6 +212,7 @@ class promptMenu(QMainWindow, QWidget):
 class ResultsDisplayer(QWidget):
     def __init__(self, data: list, request: str):
         super().__init__()
+        self.setWindowIcon(QIcon("./data/images/icons/placeholder.png")) # To be changed
         self.request = request
         self.data = data
 
@@ -308,7 +310,7 @@ def openHelpWindow(string: str):
     ## Opens a help window
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Icon.Information)
-    msg.setWindowIcon(QIcon("./data/QTImages/information.png"))
+    msg.setWindowIcon(QIcon("./data/images/QTImages/information.png"))
     msg.setText(string)
     msg.setWindowTitle("Aide")
     msg.exec()

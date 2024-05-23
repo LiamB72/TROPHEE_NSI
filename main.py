@@ -16,6 +16,7 @@ class gameProgram:
     def __init__(self):
         # Initialises the pygame basic window configs
         pygame.display.set_caption("Les J.O. aux services des bases de données: Trophée NSI")
+        pygame.display.set_icon(pygame.image.load("./data/images/icons/placeholder.png"))
 
         self.ratio_Factor = 2
         self.screen_width, self.screen_height = 600, 600
