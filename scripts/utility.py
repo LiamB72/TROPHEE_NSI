@@ -15,7 +15,7 @@ def img_loader(path) -> pygame.image:
     Loads the single image from the path.
     need to specify the image to load, with both the name and extension of the file."""
     img = pygame.image.load(BASE_IMG_PATH + path).convert()
-    img.set_colorkey((0, 0, 0))
+    # img.set_colorkey((0, 0, 0))
     img = pygame.transform.scale(img, (img.get_width() // 2, img.get_height() // 2))
 
     return img

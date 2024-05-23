@@ -16,7 +16,7 @@ class gameProgram:
     def __init__(self):
         # Initialises the pygame basic window configs
         pygame.display.set_caption("Les J.O. aux services des bases de données: Trophée NSI")
-        pygame.display.set_icon(pygame.image.load("./data/images/icons/placeholder.png"))
+        pygame.display.set_icon(pygame.image.load("./data/images/icons/logo.png"))
 
         self.ratio_Factor = 2
         self.screen_width, self.screen_height = 600, 600
@@ -45,7 +45,7 @@ class gameProgram:
             'floor': img_loader("tiles/floor.png"),
             'corner': img_loader("tiles/corner.png"),
             'portal': pygame.transform.scale(img_loader("tiles/portal.png"), (50, 50)),
-            'bg': pygame.transform.scale(pygame.image.load('data/images/tiles/idea-bg_trophee-nsi.png').convert(), (950, 750))
+            'bg': pygame.transform.scale(pygame.image.load('data/images/tiles/idea-bg_trophee-nsi.png').convert(), (1530, 1000))
         }
 
         self.portalWidth, self.portalHeight = self.assets['portal'].get_width(), self.assets['portal'].get_height()
@@ -57,15 +57,15 @@ class gameProgram:
 
         # Create the variables used for the camera
         self.camera = pygame.Rect(0, 0, self.display_width, self.display_height)
-        self.camera_offset_x = -(self.player.playerPos[0] - self.display_width / 2)
-        self.camera_offset_y = -(self.player.playerPos[1] - self.display_height / 2)
+        self.camera_offset_x = -(self.player.playerPos[0] - self.display_width // 2)
+        self.camera_offset_y = -(self.player.playerPos[1] - self.display_height // 2)
         self.camera_offset = [0, 0]
 
         # Creates rects that blocks the player off
-        self.limitLeft = pygame.Rect(-100, 0, 5, self.display_height)
-        self.limitRight = pygame.Rect(420, 0, 5, self.display_height)
-        self.limitUp = pygame.Rect(-100, 0, self.display_width + 490, 5)
-        self.limitDown = pygame.Rect(-100, self.display_height - 5, self.display_width + 490, 5)
+        self.limitLeft = pygame.Rect(-120, -50, 5, 450)
+        self.limitRight = pygame.Rect(550, -50, 5, 450)
+        self.limitUp = pygame.Rect(-120, -50, 670, 5)
+        self.limitDown = pygame.Rect(-120, 400, 670, 5)
 
         self.collisionList = [self.limitLeft, self.limitRight, self.limitUp, self.limitDown]
 
@@ -73,7 +73,7 @@ class gameProgram:
 
         while True:
             self.display.fill((0, 0, 0))
-            self.display.blit(self.bg, (-225 + self.camera_offset[0], -125 + self.camera_offset[1]))
+            self.display.blit(self.bg, (-300 + self.camera_offset[0], -200 + self.camera_offset[1]))
             # Dictionary of every rectangle and their text
             sportTeleporters = {
 
@@ -161,7 +161,11 @@ class gameProgram:
             self.player.update(((self.x_mov[1] - self.x_mov[0]) * self.player.speed, (self.y_mov[1] - self.y_mov[0]) * self.player.speed))
 
             if self.debugMode:
-                pygame.draw.rect(self.display, self.colors["Gray"], self.player.playerRect().move(self.camera_offset))
+                pygame.draw.rect(self.display, self.colors["White"], self.player.playerRect().move(self.camera_offset))
+                pygame.draw.rect(self.display, self.colors["Gray"], self.limitLeft.move(self.camera_offset))
+                pygame.draw.rect(self.display, self.colors["Gray"], self.limitRight.move(self.camera_offset))
+                pygame.draw.rect(self.display, self.colors["Gray"], self.limitUp.move(self.camera_offset))
+                pygame.draw.rect(self.display, self.colors["Gray"], self.limitDown.move(self.camera_offset))
 
             ###### -------------------------------------- ######
 
