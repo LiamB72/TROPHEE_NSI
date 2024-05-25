@@ -18,10 +18,10 @@ class gameProgram:
         pygame.display.set_caption("Les J.O. aux services des bases de données: Trophée NSI")
         pygame.display.set_icon(pygame.image.load("./data/images/icons/logo.png"))
 
-        self.ratio_Factor = 2
+        self.ratio_Factor = 1.5
         self.screen_width, self.screen_height = 600, 600
-        self.display_width = self.screen_width / self.ratio_Factor
-        self.display_height = self.screen_height / self.ratio_Factor
+        self.display_width = self.screen_width // self.ratio_Factor
+        self.display_height = self.screen_height // self.ratio_Factor
 
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         self.display = pygame.Surface((self.display_width, self.display_height))
@@ -44,8 +44,8 @@ class gameProgram:
             'wall': img_loader("tiles/wall.png"),
             'floor': img_loader("tiles/floor.png"),
             'corner': img_loader("tiles/corner.png"),
-            'portal': pygame.transform.scale(img_loader("tiles/portal.png"), (50, 50)),
-            'bg': pygame.transform.scale(pygame.image.load('data/images/tiles/idea-bg_trophee-nsi.png').convert(), (1530, 1000))
+            'portal': img_loader("tiles/portal.png"),
+            'bg': pygame.transform.scale(pygame.image.load('data/images/tiles/idea-bg_trophee-nsi.png').convert(), (1530, 1100))
         }
 
         self.portalWidth, self.portalHeight = self.assets['portal'].get_width(), self.assets['portal'].get_height()
@@ -53,7 +53,7 @@ class gameProgram:
 
 
         # Player scrip
-        self.player = player(self, 'player', (138, 130), 3)
+        self.player = player(self, 'player', (125, 50), 3)
 
         # Create the variables used for the camera
         self.camera = pygame.Rect(0, 0, self.display_width, self.display_height)
@@ -62,10 +62,10 @@ class gameProgram:
         self.camera_offset = [0, 0]
 
         # Creates rects that blocks the player off
-        self.limitLeft = pygame.Rect(-120, -50, 5, 450)
-        self.limitRight = pygame.Rect(550, -50, 5, 450)
-        self.limitUp = pygame.Rect(-120, -50, 670, 5)
-        self.limitDown = pygame.Rect(-120, 400, 670, 5)
+        self.limitLeft = pygame.Rect(-220, -220, 5, 770)
+        self.limitRight = pygame.Rect(750, -220, 5, 770)
+        self.limitUp = pygame.Rect(-220, -220, 975, 5)
+        self.limitDown = pygame.Rect(-220, 500, 1075, 5)
 
         self.collisionList = [self.limitLeft, self.limitRight, self.limitUp, self.limitDown]
 
@@ -73,33 +73,33 @@ class gameProgram:
 
         while True:
             self.display.fill((0, 0, 0))
-            self.display.blit(self.bg, (-300 + self.camera_offset[0], -200 + self.camera_offset[1]))
+            self.display.blit(self.bg, (-500 + self.camera_offset[0], -400 + self.camera_offset[1]))
             # Dictionary of every rectangle and their text
             sportTeleporters = {
 
-                "Gymnastics":   {"CollisionBox": pygame.Rect(0, 30, self.portalWidth, self.portalHeight),
+                "Gymnastics":   {"CollisionBox": pygame.Rect(-100, -100, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Gymnastics", False, self.colors["White"])}
                                 },
-                "Rowing":       {"CollisionBox": pygame.Rect(120, 30, self.portalWidth, self.portalHeight),
+                "Rowing":       {"CollisionBox": pygame.Rect(120, -100, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Rowing", False, self.colors["White"])}
                                 },
-                "Cycling":      {"CollisionBox": pygame.Rect(240, 30, self.portalWidth, self.portalHeight),
+                "Cycling":      {"CollisionBox": pygame.Rect(340, -100, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Cycling", False, self.colors["White"])}
                                 },
-                "Football":     {"CollisionBox": pygame.Rect(360, 30, self.portalWidth, self.portalHeight),
+                "Football":     {"CollisionBox": pygame.Rect(560, -100, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Football", False, self.colors["White"])}
                                 },
 
-                "Athletics":    {"CollisionBox": pygame.Rect(0, 270, self.portalWidth, self.portalHeight),
+                "Athletics":    {"CollisionBox": pygame.Rect(-100, 270, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Athletics", False, self.colors["White"])}
                                 },
                 "Hockey":       {"CollisionBox": pygame.Rect(120, 270, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Hockey", False, self.colors["White"])}
                                 },
-                "Sailing":      {"CollisionBox": pygame.Rect(240, 270, self.portalWidth, self.portalHeight),
+                "Sailing":      {"CollisionBox": pygame.Rect(340, 270, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Sailing", False, self.colors["White"])}
                                 },
-                "Swimming":     {"CollisionBox": pygame.Rect(360, 270, self.portalWidth, self.portalHeight),
+                "Swimming":     {"CollisionBox": pygame.Rect(560, 270, self.portalWidth, self.portalHeight),
                                  "Description": {"Text": self.font.render("Swimming", False, self.colors["White"])}
                                 }
             }
@@ -186,6 +186,8 @@ class gameProgram:
                         self.y_mov[0] = True
                     if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                         self.y_mov[1] = True
+                    if event.key == pygame.K_LSHIFT:
+                        self.player.speed = 5
 
                     # Opens the custom command prompt (ccp)
                     if event.key == pygame.K_t:
@@ -201,6 +203,8 @@ class gameProgram:
                         self.y_mov[0] = False
                     if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                         self.y_mov[1] = False
+                    if event.key == pygame.K_LSHIFT:
+                        self.player.speed = 3
 
                 ###### ---------------------------------------- ######
 
