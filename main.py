@@ -15,7 +15,7 @@ pygame.init()
 class gameProgram:
     def __init__(self):
         # Initialises the pygame basic window configs
-        pygame.display.set_caption("Les J.O. aux services des bases de données: Trophée NSI")
+        pygame.display.set_caption("Les bases de données aux services des JO: Trophée NSI")
         pygame.display.set_icon(pygame.image.load("./data/images/icons/logo.png"))
 
         self.ratio_Factor = 1.5
@@ -53,7 +53,7 @@ class gameProgram:
 
 
         # Player scrip
-        self.player = player(self, 'player', (125, 50), 3)
+        self.player = player(self, 'player', (125, 50), 4)
 
         # Create the variables used for the camera
         self.camera = pygame.Rect(0, 0, self.display_width, self.display_height)

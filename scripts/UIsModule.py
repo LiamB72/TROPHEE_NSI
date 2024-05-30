@@ -20,7 +20,7 @@ class promptMenu(QMainWindow, QWidget):
         """
         super().__init__()
         uic.loadUi("./data/UIs/RequestOptionsFR.ui", self)
-        self.setWindowIcon(QIcon("./data/images/icons/placeholder.png")) # To be changed
+        self.setWindowIcon(QIcon(f"./data/images/icons/{sport}.png")) # To be changed
         self.results_displayer = None
 
         self.setWindowTitle(f"{sport} - Créateur de requêtes SQL ")
@@ -212,11 +212,10 @@ class promptMenu(QMainWindow, QWidget):
 class ResultsDisplayer(QWidget):
     def __init__(self, data: list, request: str):
         super().__init__()
-        self.setWindowIcon(QIcon("./data/images/icons/placeholder.png")) # To be changed
+        self.sport = data[1][2]
         self.request = request
         self.data = data
-
-        self.sport = data[1][2]
+        self.setWindowIcon(QIcon(f"./data/images/icons/resultsDisplayer.png")) # To be changed
         self.initUI()
 
     def initUI(self):
