@@ -75,59 +75,66 @@
          <property name="frameShadow">
           <enum>QFrame::Plain</enum>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_9">
-          <property name="spacing">
-           <number>0</number>
+         <widget class="QCheckBox" name="goldCB">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>30</y>
+            <width>200</width>
+            <height>30</height>
+           </rect>
           </property>
-          <item>
-           <widget class="QCheckBox" name="goldCB">
-            <property name="font">
-             <font>
-              <pointsize>14</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Médailles d'or</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="silverCB">
-            <property name="font">
-             <font>
-              <pointsize>14</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Médailles d'argent</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="bronzeCB">
-            <property name="font">
-             <font>
-              <pointsize>14</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Médailles de bronze</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
+          <property name="font">
+           <font>
+            <pointsize>16</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Médailles d'or</string>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="silverCB">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>100</y>
+            <width>227</width>
+            <height>30</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>16</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Médailles d'argent</string>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="bronzeCB">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>175</y>
+            <width>236</width>
+            <height>30</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>16</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Médailles de bronze</string>
+          </property>
+         </widget>
         </widget>
        </widget>
        <widget class="QWidget" name="timeTab">
@@ -172,114 +179,136 @@
              <item>
               <widget class="QFrame" name="filtersFrame">
                <property name="frameShape">
-                <enum>QFrame::NoFrame</enum>
+                <enum>QFrame::StyledPanel</enum>
                </property>
                <property name="frameShadow">
-                <enum>QFrame::Plain</enum>
+                <enum>QFrame::Raised</enum>
                </property>
-               <layout class="QHBoxLayout" name="horizontalLayout">
-                <item>
-                 <widget class="QFrame" name="leftFilterFrame">
-                  <property name="frameShape">
-                   <enum>QFrame::NoFrame</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Plain</enum>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_4">
-                   <item>
-                    <widget class="QRadioButton" name="activateUnder">
-                     <property name="text">
-                      <string>Filtrer par les années</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="minTLabel">
-                     <property name="text">
-                      <string>avant:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="minTime">
-                     <property name="enabled">
-                      <bool>false</bool>
-                     </property>
-                     <property name="autoFillBackground">
-                      <bool>false</bool>
-                     </property>
-                     <property name="accelerated">
-                      <bool>true</bool>
-                     </property>
-                     <property name="minimum">
-                      <number>1986</number>
-                     </property>
-                     <property name="maximum">
-                      <number>2016</number>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="Line" name="separator">
-                  <property name="lineWidth">
-                   <number>1</number>
-                  </property>
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QFrame" name="RightFilterFrame">
-                  <property name="frameShape">
-                   <enum>QFrame::NoFrame</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Plain</enum>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_5">
-                   <item>
-                    <widget class="QRadioButton" name="activateUpper">
-                     <property name="text">
-                      <string>Filtrer par les années</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="maxTLabel">
-                     <property name="text">
-                      <string>après:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="maxTime">
-                     <property name="enabled">
-                      <bool>false</bool>
-                     </property>
-                     <property name="minimum">
-                      <number>1986</number>
-                     </property>
-                     <property name="maximum">
-                      <number>2016</number>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="activateBoth">
-               <property name="text">
-                <string>Filtrer par un intervalle de temps</string>
-               </property>
+               <widget class="QSpinBox" name="minTime">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="geometry">
+                 <rect>
+                  <x>235</x>
+                  <y>65</y>
+                  <width>115</width>
+                  <height>20</height>
+                 </rect>
+                </property>
+                <property name="autoFillBackground">
+                 <bool>false</bool>
+                </property>
+                <property name="accelerated">
+                 <bool>true</bool>
+                </property>
+                <property name="minimum">
+                 <number>1986</number>
+                </property>
+                <property name="maximum">
+                 <number>2016</number>
+                </property>
+               </widget>
+               <widget class="QLabel" name="maxTLabel">
+                <property name="geometry">
+                 <rect>
+                  <x>240</x>
+                  <y>25</y>
+                  <width>60</width>
+                  <height>16</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>après:</string>
+                </property>
+               </widget>
+               <widget class="QSpinBox" name="maxTime">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="geometry">
+                 <rect>
+                  <x>35</x>
+                  <y>65</y>
+                  <width>115</width>
+                  <height>20</height>
+                 </rect>
+                </property>
+                <property name="minimum">
+                 <number>1986</number>
+                </property>
+                <property name="maximum">
+                 <number>2016</number>
+                </property>
+               </widget>
+               <widget class="QLabel" name="minTLabel">
+                <property name="geometry">
+                 <rect>
+                  <x>30</x>
+                  <y>25</y>
+                  <width>60</width>
+                  <height>16</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>avant:</string>
+                </property>
+               </widget>
+               <widget class="QRadioButton" name="activateUpper">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>10</y>
+                  <width>142</width>
+                  <height>17</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Filtrer par les années</string>
+                </property>
+               </widget>
+               <widget class="Line" name="separator">
+                <property name="geometry">
+                 <rect>
+                  <x>180</x>
+                  <y>10</y>
+                  <width>16</width>
+                  <height>114</height>
+                 </rect>
+                </property>
+                <property name="lineWidth">
+                 <number>1</number>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+               </widget>
+               <widget class="QRadioButton" name="activateUnder">
+                <property name="geometry">
+                 <rect>
+                  <x>220</x>
+                  <y>10</y>
+                  <width>159</width>
+                  <height>17</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Filtrer par les années</string>
+                </property>
+               </widget>
+               <widget class="QRadioButton" name="activateBoth">
+                <property name="geometry">
+                 <rect>
+                  <x>92</x>
+                  <y>130</y>
+                  <width>251</width>
+                  <height>20</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Filtrer par un intervalle de temps</string>
+                </property>
+               </widget>
               </widget>
              </item>
             </layout>
