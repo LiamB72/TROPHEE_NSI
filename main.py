@@ -74,6 +74,7 @@ class gameProgram:
         while True:
             self.display.fill((0, 0, 0))
             self.display.blit(self.bg, (-500 + self.camera_offset[0], -400 + self.camera_offset[1]))
+            
             # Dictionary of every rectangle and their text
             sportTeleporters = {
 
@@ -148,7 +149,7 @@ class gameProgram:
                 playerPosText = self.font.render(f"Pos: {self.player.playerPos[0]:.0f}, {self.player.playerPos[1]:.0f}", False, self.colors["White"])
                 cameraOffText = self.font.render(f"CamOffset: {self.camera_offset[0]:.0f}, {self.camera_offset[1]:.0f}", False, self.colors["White"])
 
-                self.display.blit(fpsText, (15, 25))
+                self.display.blit(fpsText,       (15, 25))
                 self.display.blit(playerPosText, (15, 45))
                 self.display.blit(cameraOffText, (15, 65))
 
